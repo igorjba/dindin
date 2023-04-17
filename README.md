@@ -15,12 +15,16 @@ O sistema trata-se de uma aplicação para controle de finanças pessoais. As fu
 - Cadastro de uma nova transação ``*``
 - Edição de uma transação ``*``
 - Exclusão de uma transação ``*``
-- Listagem de transações ``*`` (OBS: O toltip de exclusão é ``extra`` )
-- Permitir ordenar a tabela por data (``Opcional``)
+- Listagem de transações ``*`` 
+- Permitir ordenar a tabela por data (``Extra``)
 - Na parte de resumo, o valor de entradas, saídas e saldo é obtido por meio do endpoint de extrato da **API** ``*``
-- Permitir o usuário filtrar a tabela por categoria (``Opcional``)
-- Editar perfil de usuário (``Opcional``)
+- Permitir o usuário filtrar a tabela por categoria (``Extra``)
+- Editar perfil de usuário (``Extra``)
 - Deslogar usuário ``*``
+
+> **Note** 
+> - As funcionalidades que estão `*` são obrigatórias
+> - As funcionalidades que estão marcadas com `Extra`, são são obrigatórias, mas valem pontos para aumentar seu desempenho na avaliação final
 
 ## Detalhamento de Requisitos:
 
