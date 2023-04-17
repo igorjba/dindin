@@ -14,15 +14,15 @@ O sistema trata-se de uma aplicação para controle de finanças pessoais. As fu
 
 - Cadastro do usuário ``*``
 - Login de usuário ``*``
+- Deslogar usuário ``*``
 - Cadastro de uma nova transação ``*``
 - Edição de uma transação ``*``
 - Exclusão de uma transação ``*``
 - Listagem de transações ``*`` 
+- Resumo das transações ``*`` (O valor de entradas, saídas e saldo é obtido por meio do endpoint de extrato da **API**)
 - Permitir ordenar a tabela por data (``Extra``)
-- Na parte de resumo, o valor de entradas, saídas e saldo é obtido por meio do endpoint de extrato da **API** ``*``
 - Permitir o usuário filtrar a tabela por categoria (``Extra``)
 - Editar perfil de usuário (``Extra``)
-- Deslogar usuário ``*``
 
 > **Note** 
 > - As funcionalidades que estão `*` são obrigatórias
