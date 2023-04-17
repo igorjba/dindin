@@ -125,8 +125,9 @@ Para excluir uma transação o usuário deverá clicar no ícone da lixeira, que
 Esse ícone => ![](https://i.imgur.com/X6GB3kh.png)
 
 
-> **Warning**
-> A exibição do popup, é uma funcionalidade extra, não é obrigatório. ``Podendo excluir direto uma transação ao clicar no ícone``.
+> **Warning**: A exibição do ``popup``, é uma funcionalidade extra, não é obrigatório implementar. 
+
+> **Note**: Você pode excluir uma tranasação, clicando somente no ícone, sem precisar abrir o ``popup`` para confirmar, deletando direto.
 
 Ao clicar nesse ícone, um "popup" irá aparecer para que o usuário confirme ou não a exclusão, fazendo com que não hajam exclusões por engano, veja abaixo como aparece o "popup":
 
@@ -156,7 +157,7 @@ Cada linha da tabela representa uma transação. Portanto cada botão representa
 # Pessoa A
 
 #### Cabeçalho da tabela: 
-> (``OBS: A ordenação no cabeçalho da tabela, é uma funcionalidade extra, não é obrigatório``).
+> **Warning**: A ordenação no cabeçalho da tabela, é uma funcionalidade extra, não é obrigatório implementar.
 
 No cabeçalho da tabela deverá haver a opção de clicar e ordenar de forma **crescente** e **decrescente**, para isso basta o usuário clicar no nome da coluna, a cada clique a ordenação deve ser alterada entre **crescente** e **decrescente**.
 
@@ -191,6 +192,7 @@ Veja na imagem abaixo, como deve ser o resumo;
 # Pessoa A
 
 ### Filtros:
+> **Warning**: Os filtros são funcionalidades extras, não é obrigatório implementar. 
 
 A área de filtros por padrão é oculta, por isso você deve implementar a lógica para que quando o usuário clique no botão **Filtrar** a área de filtro seja exibida e quando clicar novamente seja ocultada, veja abaixo o botão que exibe/oculta a área de filtros:
 
@@ -222,6 +224,7 @@ Veja na imagem abaixo os botões:
 # Pessoa B
 
 ### Editar perfil de usuário:
+> **Warning**: A edição do perfil é uma funcionalidade extra, não é obrigatório implementar.
 
 No header da aplicação existe um ícone:
 
