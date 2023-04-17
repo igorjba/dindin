@@ -8,6 +8,8 @@ Para o seu desenvolvimento foi liberado o layout que você pode encontrar no seg
 
 Além disso, você pode acessar o mapa mental com o mapeamento das funcionalidades clicando no seguinte [link](https://miro.com/app/board/uXjVPZkmV7c=/?share_link_id=902157252329).
 
+Aqui está a documentação da API que será usada no desenvolvimento do desafio [link](https://github.com/cubos-academy/desafio-frontend-md3-ddst10/wiki/Documenta%C3%A7%C3%A3o-da-API)
+
 O sistema trata-se de uma aplicação para controle de finanças pessoais. As funcionalidades são:
 
 - Cadastro do usuário ``*``
@@ -24,7 +26,7 @@ O sistema trata-se de uma aplicação para controle de finanças pessoais. As fu
 
 > **Note** 
 > - As funcionalidades que estão `*` são obrigatórias
-> - As funcionalidades que estão marcadas com `Extra`, são são obrigatórias, mas valem pontos para aumentar seu desempenho na avaliação final
+> - As funcionalidades que estão marcadas com `Extra`, não são obrigatórias, mas valem pontos para aumentar seu desempenho na avaliação final
 
 ## Detalhamento de Requisitos:
 
