@@ -3,8 +3,13 @@ import './styles.css'
 export default function Home() {
 
   return (
-      <div className=''>
-        <h1>Home</h1>
-      </div>
+    <div className='home'>
+      <header>
+        <div className='logo'></div>
+      </header>
+      <main>
+
+      </main>
+    </div>
   )
 };
