@@ -1,9 +1,13 @@
 :root {
   --main-font-family: 'Rubik', sans-serif;
   --records-font-family: 'Lato', sans-serif;
-  
-  --light-blue: #05EDE3;  
-  --medium-blue: #6460FB;  
+
+  --black: #000000;
+  --white: #FFFFFF;
+  --slightly-grayish-white: #FAFAFA;
+  --grayish-white: #E0E0E0;
+  --light-blue: #05EDE3;
+  --medium-blue: #6460FB;
   --dark-blue: #000A4A;
   --pink: #FF57D3;
   --record-inflow-text: #645FFB;
@@ -11,6 +15,7 @@
   --record-balance-text: #3A9FF1;
   --record-inflow-btn: #3A9FF1;
   --record-outflow-btn: #FF576B;
+  --button-color: #7978D9;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -23,7 +28,6 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: var(--main-font-family);
 }
 
 body {
@@ -31,8 +35,11 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
   width: 1440px;
   height: 1024px;
+
+  font-family: var(--main-font-family);
 }
 
 button {
@@ -40,8 +47,10 @@ button {
   height: 46px;
   width: 236px;
   border-radius: 5px;
-  color: #FFFFFF;
-  background-color: #7978D9;
+
+  color: var(--white);
+  background-color: var(--button-color);
+
   cursor: pointer;
 
   font-size: 14px;
@@ -49,15 +58,16 @@ button {
   line-height: 17px;
   letter-spacing: 0em;
   text-align: center;
-  text-transform:capitalize;
+  text-transform: capitalize;
 }
 
 /* add btn click and hover fx */
 
 #root {
-  width: 100%;
-  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
+
+  width: 100%;
+  height: 100%;
 }
