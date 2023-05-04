@@ -1,8 +1,12 @@
 :root {
   --main-font-family: 'Rubik', sans-serif;
   --records-font-family: 'Lato', sans-serif;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold: 700;
 
   --black: #000000;
+  --dark-grey: #2F2F2F;
   --white: #FFFFFF;
   --slightly-grayish-white: #FAFAFA;
   --grayish-white: #E0E0E0;
@@ -16,6 +20,7 @@
   --record-inflow-btn: #3A9FF1;
   --record-outflow-btn: #FF576B;
   --button-color: #7978D9;
+
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
