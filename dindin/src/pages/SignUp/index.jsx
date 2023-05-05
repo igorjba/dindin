@@ -1,10 +1,12 @@
 import './styles.css'
+import SignUpForm from '../../components/SignUpForm'
 
 export default function SignUp() {
 
   return (
-      <div className=''>
-        <h1>SignUp</h1>
+      <div className='container-signup'>
+        <div className='logo'></div>
+        <SignUpForm />
       </div>
   )
 };
