@@ -1,0 +1,54 @@
+header {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 1440px;
+    padding: 40px 100px; 
+
+    display:flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.user-menu {
+    display:flex;
+    flex-direction: row;
+    align-items: center;
+    cursor: pointer;
+}
+
+.profile-pic {
+    background-image: url('../../assets/profile-icon.svg');
+    width: 56px;
+    height: 56px;
+    background-size:contain;
+    background-position: center;
+}
+
+.logout-btn {
+    background-image: url('../../assets/logout-icon.svg');
+    background-size:contain;
+    background-position: center;
+    width: 22px;
+    height: 28px;
+    margin-left:15px;
+}
+
+.profile-name {
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 17px;
+    letter-spacing: 0em;
+    text-align: center;
+    user-select: none;
+    color: white;
+    text-transform: capitalize;
+}
+
+.logo {
+    width: 169px;
+    height: 45px;
+    background-image: url('../../assets/logo.svg');
+    background-position: center;
+  }
