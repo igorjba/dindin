@@ -1,28 +1,49 @@
-import './styles.css'
+import './styles.css';
+import { useState } from 'react';
 
-export default function Filter() {
+export default function Filter( { applyFilters, filterStart, categories } ) {
 
-  const showCategories = true;
-  const categories = ['contas', 'depósito', 'teste', 'lazer', 'mercado', 'TED', 'compras', 'farmácia', 'PIX']
+  const filterButtonsStart = {};
+  categories.forEach(category => filterButtonsStart[category] = false);
 
-  function spawnFilterCategory(category) {
-    return <div className='category round' key={category}>{category} <div>+</div></div>;
+  const [showFilter, setShowFilter] = useState(false);
+  const [selectedFilters, setSelectedFilters] = useState(filterButtonsStart);
+
+  function spawnFilterCategory(category, index) {
+    return <div
+    key={`filter${index}`}
+    className={`category round ${selectedFilters[category] ? "selected" : ""}`}
+    onClick={clickFilterCategory}
+    >
+      {category}<div>+</div>
+    </div>;
+  }
+
+  function clickFilterCategory(event) {
+    const option = event.target.firstChild.data;
+    const localSelectedFilters = {...selectedFilters, [option]: !selectedFilters[option]};
+    return setSelectedFilters(localSelectedFilters);
+  }
+
+  function clearFilters() {
+    setSelectedFilters(filterButtonsStart);
+    return applyFilters(filterStart); //check
   }
 
   return (
     <div className='filter-container'>
-      <div className='filter-btn round' alt='Filter'>
+      <div className='filter-btn round' alt='Filter' onClick={() => setShowFilter(!showFilter)}>
         <div className='filter-icon' alt='Filter icon'/> Filtrar
       </div>
-      {showCategories &&
+      {showFilter &&
       <div className='categories-container round'>
         <div className='categories-title'>Categoria</div>
         <div className='categories-options'>
-          {categories.map((category) => spawnFilterCategory(category))}
+          {categories.map((category, index) => spawnFilterCategory(category, index))}
         </div>
         <div className='categories-btns'>
-          <button className='round clear'>Limpar Filtros</button>
-          <button className='round apply'>Aplicar Filtros</button>
+          <button className='round clear' onClick={clearFilters}>Limpar Filtros</button>
+          <button className='round apply' onClick={() => applyFilters(selectedFilters)}>Aplicar Filtros</button>
         </div>
       </div>
       }
