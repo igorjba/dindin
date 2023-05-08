@@ -1,7 +1,7 @@
 import './styles.css';
 import { useState } from 'react';
 
-export default function Filter( { applyFilters, filterStart, categories } ) {
+export default function Filter( { setActiveFilters, filterStart, categories } ) {
 
   const filterButtonsStart = {};
   categories.forEach(category => filterButtonsStart[category] = false);
@@ -27,7 +27,7 @@ export default function Filter( { applyFilters, filterStart, categories } ) {
 
   function clearFilters() {
     setSelectedFilters(filterButtonsStart);
-    return applyFilters(filterStart); //check
+    return setActiveFilters(filterStart);
   }
 
   return (
@@ -43,7 +43,7 @@ export default function Filter( { applyFilters, filterStart, categories } ) {
         </div>
         <div className='categories-btns'>
           <button className='round clear' onClick={clearFilters}>Limpar Filtros</button>
-          <button className='round apply' onClick={() => applyFilters(selectedFilters)}>Aplicar Filtros</button>
+          <button className='round apply' onClick={() => setActiveFilters(selectedFilters)}>Aplicar Filtros</button>
         </div>
       </div>
       }

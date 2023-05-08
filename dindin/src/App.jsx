@@ -4,18 +4,19 @@ import MainRoutes from './routes/routes.jsx';
 import OutsideBackground from './assets/bg-out.svg';
 import InsideBackground from './assets/bg-in.svg';
 import Header from './components/Header';
+import { useState } from 'react';
 
 export default function App() {
-  const logged = true;
-  const user = 'thiago';
-  /* logged ? bg-in and block access to / and /signin
-     : !logged ? bg-out and block access to /home */
+  const [user, setUser] = useState({name: 'zoroastro almeida santos mocotó silva'});
+  // null or user object {id, name, etc}
+  // call setUser only in login or logout. it retrieves from api the user data and defines the user obj
+
 
   return (
-    <div className='app' style={logged ? {backgroundImage: `url(${InsideBackground})`} : {backgroundImage: `url(${OutsideBackground})`}}>
-      <Header logged={logged} user={user}/>
+    <div className='app' style={user ? {backgroundImage: `url(${InsideBackground})`} : {backgroundImage: `url(${OutsideBackground})`}}>
+      <Header logged={user ? true : false} user={user ? user.name : ''}/>
       <BrowserRouter>
-        <MainRoutes />
+        <MainRoutes setUser={setUser}/>
       </BrowserRouter>
     </div>
   )

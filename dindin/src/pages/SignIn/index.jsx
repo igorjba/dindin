@@ -1,17 +1,18 @@
 import './styles.css';
 import SignInForm from '../../components/SignInForm';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
-export default function SignIn() {
-
+export default function SignIn({setUser}) {
+  setUser(null);
   return (
       <div className='container-signin'>
         <div className='pitch'>
         <h1>Controle suas <span id='finances'>finanças</span>, sem planilha  chata.</h1>
         <p>Organizar as suas finanças nunca foi tão fácil, com o DINDIN,
           você tem tudo num único lugar e em um clique de distância.</p>
-        <button onClick={() => useNavigate('/signup')}>Cadastre-se</button> {/* redirect on click to signup */}
-        <Link to='/signup'>Cadastre-se</Link> 
+          <Link to='/signup' style={{textDecoration: 'none'}}>
+            <button>Cadastre-se</button>
+          </Link>
         </div>
         <SignInForm />
       </div>
