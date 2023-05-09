@@ -5,6 +5,7 @@
     flex-direction: column;
 
     width: 236px;
+    margin-top: 54px;
     height: 196px;
     padding: 26px 33px 31px 33px;
 
@@ -16,7 +17,8 @@
 }
 
 .summary-tittle {
-    margin: 0px 131px 23px 0;
+    margin-bottom: 23px;
+    width:100%;
 
     font-size: 18px;
     font-weight: var(--font-weight-bold);

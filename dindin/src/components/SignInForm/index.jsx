@@ -1,8 +1,20 @@
 import { Link, Navigate } from 'react-router-dom';
-import { useState } from 'react';
-import './styles.css'
+import { useState, useEffect } from 'react';
+import './styles.css';
+import api from '../../services/api';
+
 
 export default function SignInForm() {
+
+
+  async function makeLogin() {
+    try {
+      const response = await api.post('/login', {...login});
+    } catch (error) {
+      window.alert(error.response.data.mensagem);
+    } 
+  }
+
 
   const [login, setlogin] = useState({email:'', password:''});
   const [error, setError] = useState('');
@@ -18,6 +30,8 @@ export default function SignInForm() {
 
     if (!login.email) return setError('Preencha seu e-mail');
     if(!login.password) return setError('Preencha sua senha');
+
+    makeLogin();
 
     // try {chamar api para validar usuário}
     // catch(error) {return feedback visual falha}
@@ -42,6 +56,7 @@ export default function SignInForm() {
       </div>
 
       <button type='button' onClick={ handleSubmit }>Entrar</button>
+      <Link to='/home'>entrar provisório</Link>
       
 
       {error && <strong>{error}</strong>}

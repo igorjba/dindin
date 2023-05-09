@@ -1,5 +1,6 @@
 import './styles.css';
 import Table from '../../components/Table';
+import { useEffect } from 'react';
 
 export default function Home({setUser}) {
 

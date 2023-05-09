@@ -1,12 +1,26 @@
-import { Link, Navigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import './styles.css'
+import './styles.css';
+import api from '../../services/api';
 
 export default function SignUpForm() {
 
   const [signUp, setSignUp] = useState({name: '', email:'', password:'', pwcheck:''});
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
+  const navigate = useNavigate();
+
+  async function makeSignUp() {
+    let response;
+    try {
+      response = await api.post('/usuario', {nome: signUp.name, email: signUp.email, senha: signUp.password});
+      console.log(response);
+    } catch (error) {
+      window.alert(error.response.data.mensagem);
+    }
+    if (response) return setSuccess(true);
+    return
+  }
 
   function handleInput(event) {
     const signUpInfo = {...signUp, [event.target.name]: event.target.value};
@@ -17,20 +31,16 @@ export default function SignUpForm() {
     event.preventDefault();
     setError('');
 
-
     if (!signUp.name) return setError('O campo nome é obrigatório');
     if (!signUp.email) return setError('O campo e-mail é obrigatório');
     if(!signUp.password) return setError('O campo senha é obrigatório');
     if(!signUp.pwcheck || signUp.pwcheck != signUp.password) return setError('As senhas não conferem');
 
-    // try {chamar api para cadastrar usuário}
-    // catch(error) {return feedback visual falha}
-    setSuccess(true);
-    // feedback visual sucesso (imagem: Cadastro efetuado com sucesso! Você será redirecionado para a página de login.)
-    
+    makeSignUp();
+
     setTimeout(() => {
-      //navigate to '/'
-    }, 1000);
+      navigate("/");
+    }, 1500);
   }
 
   return (
@@ -60,6 +70,7 @@ export default function SignUpForm() {
       <button type='button' onClick={ handleSubmit }>Cadastrar</button>
       <Link to='/'>Já tem cadastro? Clique aqui!</Link>
       {error && <span>{error}</span>}
+      {success && <span style={{color: 'green'}}>Cadastro efetuado com sucesso!</span>}
       
     </form>
   )
