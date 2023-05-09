@@ -57,6 +57,7 @@ button {
   background-color: var(--button-color);
 
   cursor: pointer;
+  user-select: none;
 
   font-size: 14px;
   font-weight: 700;
