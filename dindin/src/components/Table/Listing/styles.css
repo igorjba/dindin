@@ -1,0 +1,143 @@
+.transaction {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+
+    padding: 20px 27px;
+    height: 69px;
+    border-bottom: 1px solid var(--grayish-white);
+
+    user-select: none;
+
+    font-size: 14px;
+}
+
+.transaction-date {
+    font-weight: var(--font-weight-bold);
+}
+
+.transaction-value {
+    font-weight: var(--font-weight-bold);
+}
+
+.transaction-edit-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+
+    margin-left: -70px;
+}
+
+.transaction-edit {
+    cursor: pointer;
+}
+
+.transaction-delete {
+    position: relative;
+
+    width: 24px;
+    height: 24px;
+
+    background-image: url(../../../assets/trash-icon.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+
+    cursor: pointer;
+}
+
+.transaction-delete-popup {
+    position: absolute;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    z-index: 2;
+
+    top: 39px;
+    left: -79px;
+
+    cursor: default;
+}
+
+.popup-rectangle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    z-index: 2;
+
+    width: 111px;
+    height: 46px;
+    border-radius: 4px;
+
+    background: var(--delete-popup-color);
+}
+
+.popup-triangle {
+    position: absolute;
+    z-index: 1;
+
+    width: 0;
+    height: 0;
+    border-left: 8.33px solid transparent;
+    border-right: 8.33px solid transparent;
+    border-bottom: 14.43px solid var(--delete-popup-color);
+    top: -9px;
+    left: 83px;
+}
+
+.transaction-edit-popup-text {
+    margin-top: 7px;
+
+    font-family: var(--main-font-family);
+    font-size: 10px;
+    font-weight: var(--font-weight-light);
+    text-transform: capitalize;
+
+    color: var(--black);
+}
+
+
+.btn-delete-popup-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+
+    margin-top: 4px;
+    margin-bottom: 8px;
+    width: 111px;
+    height: 46px;
+    border-radius: 4px;
+
+    background: #E4F2FD;
+}
+
+.btn-delete-transaction {
+    width: 37px;
+    height: 15px;
+    border-radius: 4px;
+    background-color: var(--record-inflow-btn);
+
+    font-size: 9px;
+    font-family: var(--main-font-family);
+    font-weight: var(--font-weight-regular);
+
+    cursor: pointer;
+}
+
+.btn-cancel-delete-transaction {
+    width: 37px;
+    height: 15px;
+    border-radius: 4px;
+
+    font-size: 9px;
+    font-family: var(--main-font-family);
+    font-weight: var(--font-weight-regular);
+
+    background-color: var(--record-outflow-btn);
+
+    cursor: pointer;
+}

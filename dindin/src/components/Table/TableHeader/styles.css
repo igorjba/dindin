@@ -2,13 +2,18 @@
     display: flex;
     justify-content: space-between;
     padding: 20px 27px;
+
     user-select: none;
+
+    font-size: 14px;
 }
 
 .header-date {
     display: flex;
     align-items: center;
-    width: 47px;
     justify-content: space-between;
+
+    width: 47px;
+
     cursor: pointer;
 }

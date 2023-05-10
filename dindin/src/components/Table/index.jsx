@@ -3,6 +3,8 @@ import Filter from './Filter';
 import Listing from './Listing';
 import TableHeader from './TableHeader';
 import Summary from './Summary';
+import AddTransactionModal from './AddTransactionModal';
+import EditTransactionModal from './EditTransactionModal';
 import { useState } from 'react';
 
 export default function Table() {
@@ -14,16 +16,18 @@ export default function Table() {
   categories.forEach(category => filterStart[category] = true);
   const [activeFilters, setActiveFilters] = useState(filterStart);
 
-  const summary = {inflows: 200, outflows: 70.5, balance: 129.5};
+  const summary = { inflows: 200, outflows: 70.5, balance: 129.5 };
 
   return (
     <main>
       <div className='table'>
-        <Filter setActiveFilters={setActiveFilters} categories={categories} filterStart={filterStart}/>
-        <TableHeader/>
+        <Filter setActiveFilters={setActiveFilters} categories={categories} filterStart={filterStart} />
+        <TableHeader />
         <Listing />
+        {/* <AddTransactionModal /> */}
+        {/* <EditTransactionModal /> */}
       </div>
-      <Summary summary={summary}/>
+      <Summary summary={summary} />
     </main>
   )
-};
+}

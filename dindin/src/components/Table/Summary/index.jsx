@@ -1,10 +1,10 @@
 import './styles.css'
 
-export default function Summary( { summary } ) {
+export default function Summary({ summary }) {
 
   return (
     <aside className='sidebar'>
-    
+
       <div className='summary'>
         <h1 className='summary-tittle'>Resumo</h1>
         <div className='inflows-container'>
@@ -20,12 +20,16 @@ export default function Summary( { summary } ) {
         <div className='balance-container'>
           <h3 className='balance'>Saldo</h3>
           <h3 className='balance-value'
-            style={summary.balance > 0 ? {color: `#3A9FF1`} : {color: 'red'}}>
-              R$ {summary.balance.toFixed(2)}
+            style={summary.balance > 0 ? { color: `#3A9FF1` } : { color: 'red' }}>
+            R$ {summary.balance.toFixed(2)}
           </h3>
         </div>
       </div>
-      <button className='btn-add-record'>Adicionar Registro</button>
-  </aside>
+      <button
+        className='btn-add-record'
+      >
+        Adicionar Registro
+      </button>
+    </aside>
   )
-};
+}
