@@ -1,23 +1,34 @@
-import { Link, Navigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import './styles.css';
+import { setItem } from '../../utils/storage';
 import api from '../../services/api';
 
 
-export default function SignInForm() {
-
-
-  async function makeLogin() {
-    try {
-      const response = await api.post('/login', {...login});
-    } catch (error) {
-      window.alert(error.response.data.mensagem);
-    } 
-  }
-
+export default function SignInForm( { setUser } ) {
 
   const [login, setlogin] = useState({email:'', password:''});
   const [error, setError] = useState('');
+  const navigate = useNavigate();
+
+  async function makeLogin() {
+    let response;
+    try {
+      response = await api.post('/login', {email: login.email, senha: login.password});
+    } catch (error) {
+      setError(error.response.data.mensagem);
+    }
+    if (response) {
+      const token = response.data.token;
+      const {id, email, nome: name} = response.data.usuario;
+
+      setItem('token', token);
+      
+      setUser({id, name, email});
+      return navigate("/home");
+    }
+    return;
+  }
 
   function handleInput(event) {
     const loginInfo = {...login, [event.target.name]: event.target.value};
@@ -32,12 +43,6 @@ export default function SignInForm() {
     if(!login.password) return setError('Preencha sua senha');
 
     makeLogin();
-
-    // try {chamar api para validar usuário}
-    // catch(error) {return feedback visual falha}
-    // salvar token e userId no localStorage
-    
-    // redirecionar para /home
     
   }
 
@@ -55,9 +60,7 @@ export default function SignInForm() {
         <input type='password' name='password' id='password' onChange={ handleInput }/>
       </div>
 
-      <button type='button' onClick={ handleSubmit }>Entrar</button>
-      <Link to='/home'>entrar provisório</Link>
-      
+      <button type='button' onClick={ handleSubmit }>Entrar</button>      
 
       {error && <strong>{error}</strong>}
       

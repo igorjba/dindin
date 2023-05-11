@@ -1,8 +1,7 @@
 import './styles.css';
 import SignUpForm from '../../components/SignUpForm';
 
-export default function SignUp({setUser}) {
-  setUser(null);
+export default function SignUp() {
   return (
       <div className='container-signup'>
         <SignUpForm />

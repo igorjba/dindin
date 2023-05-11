@@ -14,7 +14,6 @@ export default function SignUpForm() {
     let response;
     try {
       response = await api.post('/usuario', {nome: signUp.name, email: signUp.email, senha: signUp.password});
-      console.log(response);
     } catch (error) {
       window.alert(error.response.data.mensagem);
     }
