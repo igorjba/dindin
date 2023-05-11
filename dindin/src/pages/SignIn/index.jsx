@@ -2,8 +2,7 @@ import './styles.css';
 import SignInForm from '../../components/SignInForm';
 import { Link } from 'react-router-dom';
 
-export default function SignIn({setUser}) {
-  setUser(null);
+export default function SignIn( { setUser } ) {
   return (
       <div className='container-signin'>
         <div className='pitch'>
@@ -14,7 +13,7 @@ export default function SignIn({setUser}) {
             <button>Cadastre-se</button>
           </Link>
         </div>
-        <SignInForm />
+        <SignInForm setUser={ setUser }/>
       </div>
   )
 };

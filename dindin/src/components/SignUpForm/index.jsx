@@ -14,11 +14,15 @@ export default function SignUpForm() {
     let response;
     try {
       response = await api.post('/usuario', {nome: signUp.name, email: signUp.email, senha: signUp.password});
-      console.log(response);
     } catch (error) {
       window.alert(error.response.data.mensagem);
     }
-    if (response) return setSuccess(true);
+    if (response) {
+      setSuccess(true);
+      return setTimeout(() => {
+        navigate("/");
+      }, 1500);
+    }
     return
   }
 
@@ -37,10 +41,6 @@ export default function SignUpForm() {
     if(!signUp.pwcheck || signUp.pwcheck != signUp.password) return setError('As senhas não conferem');
 
     makeSignUp();
-
-    setTimeout(() => {
-      navigate("/");
-    }, 1500);
   }
 
   return (
