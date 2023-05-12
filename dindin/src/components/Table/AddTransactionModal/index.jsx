@@ -1,15 +1,20 @@
 import './styles.css'
+import { useState } from 'react';
 
-export default function AddTransactionModal() {
+
+
+export default function AddTransactionModal({ activeAddTransactionModal, setActiveAddTransactionModal }) {
 
   return (
-    <div className="modal-add-transaction">
+    <div className={activeAddTransactionModal ? "modal-add-transaction " : "modal-add-transaction hidden"}>
       <div className="modal-add-transaction-container">
         <div className="modal-add-transaction-header">
-
           <h1 className="tittle">Adicionar Registro</h1>
+          <div
+            className='btn-close'
+            onClick={() => setActiveAddTransactionModal(!activeAddTransactionModal)}
 
-          <div className="btn-close"></div>
+          ></div>
         </div>
         <div className="transaction-type-container">
           <button className='btn-transaction-input'>Entrada</button>
@@ -22,16 +27,18 @@ export default function AddTransactionModal() {
           </div>
           <div className="modal-category">
             <label htmlFor='category' className="modal-category-text input-label">Categoria</label>
-            <select className="category-select" id='category'>
-              <option value="pix">Pix</option>
-              <option value="lazer">Lazer</option>
-              <option value="alimentação">Alimentação</option>
-              <option value="ted">TED</option>
-              <option value="contas">Contas</option>
-              <option value="deposito">Depósito</option>
-              <option value="mercado">Mercado</option>
-              <option value="farmacia">Farmácia</option>
-            </select>
+            <div className='category-box'>
+              <select className="category-select" id='category'>
+                <option value="pix">Pix</option>
+                <option value="lazer">Lazer</option>
+                <option value="alimentação">Alimentação</option>
+                <option value="ted">TED</option>
+                <option value="contas">Contas</option>
+                <option value="deposito">Depósito</option>
+                <option value="mercado">Mercado</option>
+                <option value="farmacia">Farmácia</option>
+              </select>
+            </div>
           </div>
           <div className="modal-date">
             <label htmlFor='date' className="modal-date-text input-label">Data</label>

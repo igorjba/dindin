@@ -72,16 +72,25 @@ export default function Table( { makeLogout } ) {
   categories.forEach(category => filterStart[category] = true);
   const [activeFilters, setActiveFilters] = useState(filterStart);
 
+  const [activeAddTransactionModal, setActiveAddTransactionModal] = useState(false);
+
   return (
     <main>
       <div className='table'>
         <Filter setActiveFilters={setActiveFilters} categories={categories} filterStart={filterStart} />
         <TableHeader />
         <Listing />
-        {/* <AddTransactionModal /> */}
+        <AddTransactionModal
+          setActiveAddTransactionModal={setActiveAddTransactionModal}
+          activeAddTransactionModal={activeAddTransactionModal}
+        />
         {/* <EditTransactionModal /> */}
       </div>
-      <Summary summaryRef={summaryRef} />
+      <Summary
+        summaryRef={summaryRef}
+        setActiveAddTransactionModal={setActiveAddTransactionModal}
+        activeAddTransactionModal={activeAddTransactionModal}
+      />
     </main>
   )
 }

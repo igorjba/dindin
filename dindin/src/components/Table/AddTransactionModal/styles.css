@@ -1,5 +1,5 @@
 .modal-add-transaction {
-    display: none;
+    display: flex;
     justify-content: center;
     align-items: center;
 
@@ -43,6 +43,21 @@
     text-align: left;
     text-transform: capitalize;
 }
+
+.btn-close {
+    width: 26px;
+    height: 26px;
+    margin-right: 10px;
+
+    background-image: url(../../../assets/close-icon.svg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    cursor: pointer;
+}
+
+
 
 .transaction-type-container {
     display: flex;
@@ -137,6 +152,7 @@
 
 .category-select option {
     height: 63.49px;
+    width: 10px;
 
     font-size: 16px;
     font-weight: var(--font-weight-regular);
@@ -145,4 +161,8 @@
 
 .category-select option:focus {
     width: 10px;
+}
+
+.hidden {
+    display: none;
 }
