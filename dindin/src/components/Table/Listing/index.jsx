@@ -3,92 +3,7 @@ import editIcon from '../../../assets/edit-icon.svg'
 import trashIcon from '../../../assets/trash-icon.svg'
 import { useState } from 'react'
 
-export default function Listing() {
-  const [transactions, setTransactions] = useState([
-    {
-      id: 1,
-      date: '01/09/21',
-      weekday: 'Quarta',
-      description: 'Venda dos brigadeiros',
-      category: 'Pix',
-      value: 'R$10000,00',
-    }
-    ,
-    {
-      id: 2,
-      date: '01/09/21',
-      weekday: 'Quarta',
-      description: 'Venda dos brigadeiros',
-      category: 'Pix',
-      value: 'R$100,00',
-    },
-    {
-      id: 3,
-      date: '01/09/21',
-      weekday: 'Quarta',
-      description: 'Venda dos brigadeiros',
-      category: 'Pix',
-      value: '-R$100,00'
-    },
-    {
-      id: 4,
-      date: '01/09/21',
-      weekday: 'Quarta',
-      description: 'Venda dos brigadeiros',
-      category: 'Pix',
-      value: '-R$100,00'
-    },
-    {
-      id: 5,
-      date: '01/09/21',
-      weekday: 'Quarta',
-      description: 'Venda dos brigadeiros',
-      category: 'Pix',
-      value: 'R$100,00',
-    },
-    {
-      id: 6,
-      date: '01/09/21',
-      weekday: 'Quarta',
-      description: 'Venda dos brigadeiros',
-      category: 'Pix',
-      value: 'R$100,00',
-    },
-    {
-      id: 7,
-      date: '01/09/21',
-      weekday: 'Quarta',
-      description: 'Venda dos brigadeiros',
-      category: 'Pix',
-      value: 'R$100,00',
-    },
-    {
-      id: 8,
-      date: '01/09/21',
-      weekday: 'Quarta',
-      description: 'Venda dos brigadeiros',
-      category: 'Pix',
-      value: 'R$100,00',
-    },
-    {
-      id: 9,
-      date: '01/09/21',
-      weekday: 'Quarta',
-      description: 'Venda dos brigadeiros',
-      category: 'Pix',
-      value: 'R$100,00',
-    },
-
-    {
-      id: 10,
-      date: '01/09/21',
-      weekday: 'Quarta',
-      description: 'Venda dos brigadeiros',
-      category: 'Pix',
-      value: '-R$100,00',
-    }
-  ])
-
+export default function Listing({ transactions, setTransactions }) {
   return (
     <ul className='table-list'>
       {transactions.map((transaction) => (
@@ -103,8 +18,7 @@ export default function Listing() {
           <span className='transaction-category'>{transaction.category}</span>
           <span
             className="transaction-value"
-
-            style={{ color: transaction.value.includes('-') ? '#FA8C10' : '#7B61FF' }}
+            style={{ color: transaction.type === 'input' ? '#7B61FF' : '#FA8C10' }}
           >
             {transaction.value}
           </span>

@@ -1,8 +1,8 @@
 import './styles.css'
 import { useState } from 'react';
+import InputMask from 'react-input-mask';
 
 export default function AddTransactionModal({ activeAddTransactionModal, setActiveAddTransactionModal, transactions, setTransactions }) {
-
   const [categories, setCategories] = useState([
     {
       id: 1,
@@ -37,37 +37,53 @@ export default function AddTransactionModal({ activeAddTransactionModal, setActi
       name: 'Farmácia'
     },
   ])
-
   const [transactionType, setTransactionType] = useState('input')
+  const [transactionValue, setTransactionValue] = useState('')
+  const [transactionCategory, setTransactionCategory] = useState('')
+  const [transactionDate, setTransactionDate] = useState('')
+  const [transactionWeekday, setTransactionWeekday] = useState('')
+  const [transactionDescription, setTransactionDescription] = useState('')
+  const [transactionId, setTransactionId] = useState(0)
 
-  const [transaction, setTransaction] = useState({
-    value: '',
-    category: '',
-    date: '',
-    description: '',
-  })
-
-  const handleTransactionType = (type) => {
+  function handleTransactionType(type) {
     setTransactionType(type)
   }
 
-  const handleTransaction = (event) => {
-    setTransaction({
-      ...transaction,
-      [event.target.id]: event.target.value
-    })
+  function handleTransactionValue(value) {
+    setTransactionValue(value)
   }
 
-  const handleAddTransaction = () => {
+  function handleTransactionCategory(category) {
+    setTransactionCategory(category)
+  }
+
+  function handleTransactionDate(date) {
+    const [year, month, day] = date.split('-');
+    const formattedDate = `${day}/${month}/${year.slice(-2)}`;
+    setTransactionDate(formattedDate)
+
+    const dateObj = new Date(date);
+    const weekday = dateObj.toLocaleDateString('pt-BR', { weekday: 'long' }).replace('-feira', '');
+    setTransactionWeekday(weekday);
+  }
+
+  function handleTransactionDescription(description) {
+    setTransactionDescription(description)
+  }
+
+  function handleAddTransaction() {
     const newTransaction = {
-      id: transactions[transactions.length - 1].id + 1,
+      id: transactionId,
       type: transactionType,
-      value: transaction.value,
-      category: transaction.category,
-      date: transaction.date,
-      description: transaction.description,
+      description: transactionDescription,
+      date: transactionDate,
+      category: transactionCategory,
+      weekday: transactionWeekday,
+      value: transactionType === 'input' ? `R$${transactionValue}` : `R$${-transactionValue}`,
     }
-    console.log(newTransaction)
+    setTransactions([...transactions, newTransaction])
+    setTransactionId(transactions[transactions.length - 1].id + 1)
+    setActiveAddTransactionModal(!activeAddTransactionModal)
   }
 
   return (
@@ -82,13 +98,12 @@ export default function AddTransactionModal({ activeAddTransactionModal, setActi
         </div>
         <div className="transaction-type-container">
           <button
-            className="btn-transaction-input btn-inactive"
-            // className={transactionType === 'input' ? 'btn-transaction-input' : 'btn-transaction-input btn-inactive'}
+            className={transactionType === 'input' ? 'btn-modal-transaction-input btn-input-active' : 'btn-modal-transaction-input btn-inactive'}
             onClick={() => handleTransactionType('input')}
           >Entrada
           </button>
           <button
-            className={transactionType === 'output' ? 'btn-transaction-output' : 'btn-transaction-output btn-inactive'}
+            className={transactionType === 'output' ? 'btn-modal-transaction-output btn-output-active' : 'btn-modal-transaction-output btn-inactive'}
             onClick={() => handleTransactionType('output')}
           >Saída</button>
         </div>
@@ -96,29 +111,45 @@ export default function AddTransactionModal({ activeAddTransactionModal, setActi
           <div className="modal-value">
             <label htmlFor='value' className="modal-value-text input-label">Valor</label>
             <input
-              className="modal-value-input"
               type="number"
-              id='value'
-
+              id="value"
+              className="modal-value-input"
+              onChange={(event) => handleTransactionValue(event.target.value)}
             />
           </div>
           <div className="modal-category">
             <label htmlFor='category' className="modal-category-text input-label">Categoria</label>
-            <div className='category-box'>
-              <select className="category-select" id='category'>
-                {categories.map((category) => (
-                  <option key={category.id} value={category.name}>{category.name}</option>
-                ))}
-              </select>
-            </div>
+            <select
+              className="category-select"
+              id='category'
+              onChange={(event) => handleTransactionCategory(event.target.value)}
+              placeholder=''
+            >
+              <option value="" style={{ display: 'none' }}></option>
+              {categories.map((category) => (
+                <option key={category.id} value={category.name}>{category.name}</option>
+              ))}
+            </select>
+
           </div>
           <div className="modal-date">
             <label htmlFor='date' className="modal-date-text input-label">Data</label>
-            <input className="modal-date-input" type="date" id='date' />
+            <input
+              className="modal-date-input"
+              type="date"
+              id='date'
+              onChange={(event) => handleTransactionDate(event.target.value)}
+            />
           </div>
           <div className="modal-description">
             <label htmlFor="description" className="modal-description-text input-label">Descrição</label>
-            <input className="modal-description-input" type="text" maxLength={21} id='description' />
+            <input
+              className="modal-description-input"
+              type="text"
+              maxLength={21}
+              id='description'
+              onChange={(event) => handleTransactionDescription(event.target.value)}
+            />
           </div>
         </div>
         <div className="modal-footer">
