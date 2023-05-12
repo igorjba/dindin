@@ -11,6 +11,8 @@ export default function Table() {
 
   // get input data from api, generate categories, filterStart, summary, 
 
+
+
   const categories = ['contas', 'depósito', 'água', 'lazer', 'mercado', 'TED', 'compras', 'farmácia', 'PIX'];
   const filterStart = {};
   categories.forEach(category => filterStart[category] = true);
@@ -18,16 +20,25 @@ export default function Table() {
 
   const summary = { inflows: 200, outflows: 70.5, balance: 129.5 };
 
+  const [activeAddTransactionModal, setActiveAddTransactionModal] = useState(false);
+
   return (
     <main>
       <div className='table'>
         <Filter setActiveFilters={setActiveFilters} categories={categories} filterStart={filterStart} />
         <TableHeader />
         <Listing />
-        {/* <AddTransactionModal /> */}
+        <AddTransactionModal
+          setActiveAddTransactionModal={setActiveAddTransactionModal}
+          activeAddTransactionModal={activeAddTransactionModal}
+        />
         {/* <EditTransactionModal /> */}
       </div>
-      <Summary summary={summary} />
+      <Summary
+        summary={summary}
+        setActiveAddTransactionModal={setActiveAddTransactionModal}
+        activeAddTransactionModal={activeAddTransactionModal}
+      />
     </main>
   )
 }
