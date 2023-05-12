@@ -4,10 +4,21 @@ import trashIcon from '../../../assets/trash-icon.svg'
 import { useState } from 'react'
 
 export default function Listing({ transactions, setTransactions }) {
+  const [deletePopup, setDeletePopup] = useState(false)
+
+  const handleDeleteTransaction = (id) => {
+    const newTransactions = transactions.filter((transaction) => transaction.id !== id)
+    setTransactions(newTransactions)
+  }
+
+  //retirar 
+
+
+
+
   return (
     <ul className='table-list'>
       {transactions.map((transaction) => (
-
         <li
           className='transaction'
           key={transaction.id}
@@ -34,14 +45,24 @@ export default function Listing({ transactions, setTransactions }) {
               className='transaction-delete'
               src={trashIcon}
               alt="Trash Icon"
+              onClick={() => setDeletePopup(!deletePopup)}
+
             >
-              <div className="transaction-delete-popup">
+              <div
+                className={deletePopup ? "transaction-delete-popup" : "transaction-delete-popup hidden"}
+              >
                 <div className='popup-rectangle'>
                   <div className='popup-triangle'></div>
                   <span className="transaction-edit-popup-text">Apagar item?</span>
                   <div className='btn-delete-popup-container'>
-                    <button className="btn-delete-transaction">Sim</button>
-                    <button className="btn-cancel-delete-transaction">Não</button>
+                    <button
+                      className="btn-delete-transaction"
+                      onClick={() => handleDeleteTransaction(transaction.id)}
+                    >Sim</button>
+                    <button
+                      className="btn-cancel-delete-transaction"
+                      onClick={() => setDeletePopup(!deletePopup)}
+                    >Não</button>
                   </div>
                 </div>
               </div>

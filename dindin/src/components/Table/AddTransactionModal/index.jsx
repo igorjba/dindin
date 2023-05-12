@@ -1,6 +1,5 @@
 import './styles.css'
 import { useState } from 'react';
-import InputMask from 'react-input-mask';
 
 export default function AddTransactionModal({ activeAddTransactionModal, setActiveAddTransactionModal, transactions, setTransactions }) {
   const [categories, setCategories] = useState([
@@ -79,15 +78,15 @@ export default function AddTransactionModal({ activeAddTransactionModal, setActi
       date: transactionDate,
       category: transactionCategory,
       weekday: transactionWeekday,
-      value: transactionType === 'input' ? `R$${transactionValue}` : `R$${-transactionValue}`,
+      value: transactionType === 'input' ? `R$${transactionValue}` : `R$-${transactionValue}`,
     }
     setTransactions([...transactions, newTransaction])
-    setTransactionId(transactions[transactions.length - 1].id + 1)
+    setTransactionId(transactions[transactions.length - 1].id + 1, 1)
     setActiveAddTransactionModal(!activeAddTransactionModal)
   }
 
   return (
-    <div className={activeAddTransactionModal ? "modal-add-transaction " : "modal-add-transaction hidden"}>
+    <div className={activeAddTransactionModal ? "modal-add-transaction" : "modal-add-transaction hidden"}>
       <div className="modal-add-transaction-container">
         <div className="modal-add-transaction-header">
           <h1 className="tittle">Adicionar Registro</h1>
