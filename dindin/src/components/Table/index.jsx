@@ -13,7 +13,6 @@ export default function Table( { makeLogout } ) {
 
   useEffect(() => {
     updateTransactions();
-    console.log(transactions);
   }, []);
 
   async function updateTransactions() {
@@ -37,7 +36,7 @@ export default function Table( { makeLogout } ) {
       }
 
       setTransactions(localTransactions);
-      updateSummary();
+      updateSummary(localTransactions);
       return updateCategories(localTransactions);
     }
 
@@ -46,19 +45,17 @@ export default function Table( { makeLogout } ) {
 
   function updateCategories(localTransactions) {
     const localCategories = [];
-    console.log(localTransactions);
     localTransactions.forEach( transaction => localCategories.indexOf(transaction.categoryname) < 0 ? localCategories.push(transaction.categoryname) : false);
-    console.log(localCategories);
     return setCategories(localCategories);
   }
 
-  function updateSummary() {
+  function updateSummary(localTransactions) {
     let inflows = 0;
     let outflows = 0;
 
-    for (let i = 0; i < transactions.length; i++) {
-      if (transactions[i].type === 'entrada') inflows += transactions[i].value;
-      else outflows += transactions[i].value;
+    for (let i = 0; i < localTransactions.length; i++) {
+      if (localTransactions[i].type === 'entrada') inflows += localTransactions[i].value;
+      else outflows += localTransactions[i].value;
     }
 
     const balance = inflows - outflows;
