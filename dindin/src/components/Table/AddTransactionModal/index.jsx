@@ -1,9 +1,74 @@
 import './styles.css'
 import { useState } from 'react';
 
+export default function AddTransactionModal({ activeAddTransactionModal, setActiveAddTransactionModal, transactions, setTransactions }) {
 
+  const [categories, setCategories] = useState([
+    {
+      id: 1,
+      name: 'Pix'
+    },
+    {
+      id: 2,
+      name: 'Lazer'
+    },
+    {
+      id: 3,
+      name: 'Alimentação'
+    },
+    {
+      id: 4,
+      name: 'TED'
+    },
+    {
+      id: 5,
+      name: 'Contas'
+    },
+    {
+      id: 6,
+      name: 'Depósito'
+    },
+    {
+      id: 7,
+      name: 'Mercado'
+    },
+    {
+      id: 8,
+      name: 'Farmácia'
+    },
+  ])
 
-export default function AddTransactionModal({ activeAddTransactionModal, setActiveAddTransactionModal }) {
+  const [transactionType, setTransactionType] = useState('input')
+
+  const [transaction, setTransaction] = useState({
+    value: '',
+    category: '',
+    date: '',
+    description: '',
+  })
+
+  const handleTransactionType = (type) => {
+    setTransactionType(type)
+  }
+
+  const handleTransaction = (event) => {
+    setTransaction({
+      ...transaction,
+      [event.target.id]: event.target.value
+    })
+  }
+
+  const handleAddTransaction = () => {
+    const newTransaction = {
+      id: transactions[transactions.length - 1].id + 1,
+      type: transactionType,
+      value: transaction.value,
+      category: transaction.category,
+      date: transaction.date,
+      description: transaction.description,
+    }
+    console.log(newTransaction)
+  }
 
   return (
     <div className={activeAddTransactionModal ? "modal-add-transaction " : "modal-add-transaction hidden"}>
@@ -13,30 +78,37 @@ export default function AddTransactionModal({ activeAddTransactionModal, setActi
           <div
             className='btn-close'
             onClick={() => setActiveAddTransactionModal(!activeAddTransactionModal)}
-
           ></div>
         </div>
         <div className="transaction-type-container">
-          <button className='btn-transaction-input'>Entrada</button>
-          <button className='btn-transaction-output'>Saída</button>
+          <button
+            className="btn-transaction-input btn-inactive"
+            // className={transactionType === 'input' ? 'btn-transaction-input' : 'btn-transaction-input btn-inactive'}
+            onClick={() => handleTransactionType('input')}
+          >Entrada
+          </button>
+          <button
+            className={transactionType === 'output' ? 'btn-transaction-output' : 'btn-transaction-output btn-inactive'}
+            onClick={() => handleTransactionType('output')}
+          >Saída</button>
         </div>
         <div className="modal-inputs">
           <div className="modal-value">
             <label htmlFor='value' className="modal-value-text input-label">Valor</label>
-            <input className="modal-value-input" type="number" id='value' />
+            <input
+              className="modal-value-input"
+              type="number"
+              id='value'
+
+            />
           </div>
           <div className="modal-category">
             <label htmlFor='category' className="modal-category-text input-label">Categoria</label>
             <div className='category-box'>
               <select className="category-select" id='category'>
-                <option value="pix">Pix</option>
-                <option value="lazer">Lazer</option>
-                <option value="alimentação">Alimentação</option>
-                <option value="ted">TED</option>
-                <option value="contas">Contas</option>
-                <option value="deposito">Depósito</option>
-                <option value="mercado">Mercado</option>
-                <option value="farmacia">Farmácia</option>
+                {categories.map((category) => (
+                  <option key={category.id} value={category.name}>{category.name}</option>
+                ))}
               </select>
             </div>
           </div>
@@ -50,7 +122,10 @@ export default function AddTransactionModal({ activeAddTransactionModal, setActi
           </div>
         </div>
         <div className="modal-footer">
-          <button className="modal-btn-confirm">Confirmar</button>
+          <button
+            className="modal-btn-confirm"
+            onClick={() => handleAddTransaction()}
+          >Confirmar</button>
         </div>
       </div>
     </div>
