@@ -22,7 +22,7 @@ export default function MainRoutes() {
                 response = await api.get('/usuario', {headers: {Authorization: `Bearer ${token}`}});
             } catch (error) {
                 window.alert(error.response.data.mensagem);
-                clearItems();
+                makeLogout();
             }
             
             if (response) {
@@ -60,7 +60,7 @@ export default function MainRoutes() {
 
             <Route path='/home' element= {
                 <RequireAuth redirectTo='/'>
-                    <Home />
+                    <Home makeLogout={makeLogout}/>
                 </RequireAuth>
             }/> 
         </Routes>
