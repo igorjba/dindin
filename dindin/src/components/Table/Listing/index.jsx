@@ -11,11 +11,6 @@ export default function Listing({ transactions, setTransactions }) {
     setTransactions(newTransactions)
   }
 
-  //retirar 
-
-
-
-
   return (
     <ul className='table-list'>
       {transactions.map((transaction) => (
