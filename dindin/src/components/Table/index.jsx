@@ -12,10 +12,10 @@ import api from '../../services/api';
 export default function Table( { makeLogout } ) {
 
   useEffect(() => {
-    fetchTransactions();
+    updateTransactions();
   }, []);
 
-  async function fetchTransactions() {
+  async function updateTransactions() {
 
     const token = getItem('token');
     let response;
@@ -28,6 +28,7 @@ export default function Table( { makeLogout } ) {
 
     if (response){
       const localTransactions = [];
+
       for (let i = 0; i < response.data.length; i++) {
         const {id, tipo: type, descricao: description, valor: value, data: date, usuario_id: userid, categoria_id: categoryid, categoria_nome: categoryname} = response.data[i];
         const transaction = {id, type, description, value, date, userid, categoryid, categoryname};
@@ -35,33 +36,52 @@ export default function Table( { makeLogout } ) {
       }
 
       setTransactions(localTransactions);
-      updateSummary();
-      return updateCategories();
+      updateSummary(localTransactions);
+      return updateCategories(localTransactions);
     }
+
     return;
   }
 
-  function updateCategories() {
-    const localCategories = transactions.map(transaction => categories.indexOf(transaction.type) < 0);
+  function updateCategories(localTransactions) {
+    const localCategories = [];54
+    localTransactions.forEach( transaction => localCategories.indexOf(transaction.categoryname) < 0 ? localCategories.push(transaction.categoryname) : false);
     return setCategories(localCategories);
   }
 
-  function updateSummary() {
+  function updateSummary(localTransactions) {
     let inflows = 0;
     let outflows = 0;
 
-    for (let i = 0; i < transactions.length; i++) {
-      if (transactions[i].type === 'entrada') inflows += transactions[i].value;
-      else outflows += transactions[i].value;
+    for (let i = 0; i < localTransactions.length; i++) {
+      if (localTransactions[i].type === 'entrada') inflows += localTransactions[i].value;
+      else outflows += localTransactions[i].value;
     }
 
     const balance = inflows - outflows;
 
-    // check if this is working
-    summaryRef.current.inflows = inflows;
-    summaryRef.current.outflows = outflows;
-    summaryRef.current.balance = balance;
+    summaryRef.current.inflows = (inflows / 100);
+    summaryRef.current.outflows = (outflows / 100);
+    summaryRef.current.balance = (balance / 100);
     return;
+  }
+
+  async function postTransaction() {
+    const data = {
+      tipo: "entrada",
+      descricao: "Salário",
+      valor: 300000,
+      data: "2022-03-24T15:30:00.000Z",
+      categoria_id: 5
+    };
+    const token = getItem('token');
+    let response;
+    try {
+      response = await api.post('/transacao', data, { headers: {Authorization: `Bearer ${token}`} });
+    } catch (error) {
+      makeLogout();
+    }
+    return updateTransactions();
   }
 
   const [categories, setCategories] = useState([]);
@@ -79,7 +99,7 @@ export default function Table( { makeLogout } ) {
       <div className='table'>
         <Filter setActiveFilters={setActiveFilters} categories={categories} filterStart={filterStart} />
         <TableHeader />
-        <Listing />
+        <Listing transactions={transactions}/>
         <AddTransactionModal
           setActiveAddTransactionModal={setActiveAddTransactionModal}
           activeAddTransactionModal={activeAddTransactionModal}
