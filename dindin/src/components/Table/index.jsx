@@ -44,7 +44,7 @@ export default function Table( { makeLogout } ) {
   }
 
   function updateCategories(localTransactions) {
-    const localCategories = [];
+    const localCategories = [];54
     localTransactions.forEach( transaction => localCategories.indexOf(transaction.categoryname) < 0 ? localCategories.push(transaction.categoryname) : false);
     return setCategories(localCategories);
   }
@@ -72,7 +72,7 @@ export default function Table( { makeLogout } ) {
       descricao: "Salário",
       valor: 300000,
       data: "2022-03-24T15:30:00.000Z",
-      categoria_id: 6
+      categoria_id: 5
     };
     const token = getItem('token');
     let response;
@@ -99,7 +99,7 @@ export default function Table( { makeLogout } ) {
       <div className='table'>
         <Filter setActiveFilters={setActiveFilters} categories={categories} filterStart={filterStart} />
         <TableHeader />
-        <Listing />
+        <Listing transactions={transactions}/>
         <AddTransactionModal
           setActiveAddTransactionModal={setActiveAddTransactionModal}
           activeAddTransactionModal={activeAddTransactionModal}
