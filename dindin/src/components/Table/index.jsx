@@ -12,10 +12,11 @@ import api from '../../services/api';
 export default function Table( { makeLogout } ) {
 
   useEffect(() => {
-    fetchTransactions();
+    updateTransactions();
+    console.log(transactions);
   }, []);
 
-  async function fetchTransactions() {
+  async function updateTransactions() {
 
     const token = getItem('token');
     let response;
@@ -28,6 +29,7 @@ export default function Table( { makeLogout } ) {
 
     if (response){
       const localTransactions = [];
+
       for (let i = 0; i < response.data.length; i++) {
         const {id, tipo: type, descricao: description, valor: value, data: date, usuario_id: userid, categoria_id: categoryid, categoria_nome: categoryname} = response.data[i];
         const transaction = {id, type, description, value, date, userid, categoryid, categoryname};
@@ -36,13 +38,17 @@ export default function Table( { makeLogout } ) {
 
       setTransactions(localTransactions);
       updateSummary();
-      return updateCategories();
+      return updateCategories(localTransactions);
     }
+
     return;
   }
 
-  function updateCategories() {
-    const localCategories = transactions.map(transaction => categories.indexOf(transaction.type) < 0);
+  function updateCategories(localTransactions) {
+    const localCategories = [];
+    console.log(localTransactions);
+    localTransactions.forEach( transaction => localCategories.indexOf(transaction.categoryname) < 0 ? localCategories.push(transaction.categoryname) : false);
+    console.log(localCategories);
     return setCategories(localCategories);
   }
 
@@ -57,11 +63,28 @@ export default function Table( { makeLogout } ) {
 
     const balance = inflows - outflows;
 
-    // check if this is working
-    summaryRef.current.inflows = inflows;
-    summaryRef.current.outflows = outflows;
-    summaryRef.current.balance = balance;
+    summaryRef.current.inflows = (inflows / 100);
+    summaryRef.current.outflows = (outflows / 100);
+    summaryRef.current.balance = (balance / 100);
     return;
+  }
+
+  async function postTransaction() {
+    const data = {
+      tipo: "entrada",
+      descricao: "Salário",
+      valor: 300000,
+      data: "2022-03-24T15:30:00.000Z",
+      categoria_id: 6
+    };
+    const token = getItem('token');
+    let response;
+    try {
+      response = await api.post('/transacao', data, { headers: {Authorization: `Bearer ${token}`} });
+    } catch (error) {
+      makeLogout();
+    }
+    return updateTransactions();
   }
 
   const [categories, setCategories] = useState([]);
