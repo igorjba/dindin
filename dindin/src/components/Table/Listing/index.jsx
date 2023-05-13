@@ -3,12 +3,33 @@ import editIcon from '../../../assets/edit-icon.svg'
 import trashIcon from '../../../assets/trash-icon.svg'
 import { useState } from 'react'
 
-export default function Listing({ transactions, setTransactions }) {
+export default function Listing({ transactions, setTransactions, activeEditTransactionModal, setActiveEditTransactionModal }) {
   const [deletePopup, setDeletePopup] = useState(false)
+  const [transactionId, setTransactionId] = useState(0)
+  const [transactionIndex, setTransactionIndex] = useState(0)
+  const [transactionWeekday, setTransactionWeekday] = useState('')
+  const [transactionValue, setTransactionValue] = useState('')
+
 
   const handleDeleteTransaction = (id) => {
     const newTransactions = transactions.filter((transaction) => transaction.id !== id)
     setTransactions(newTransactions)
+  }
+
+  const handleTransactionId = (id) => {
+    setTransactionId(id)
+  }
+
+  const handleTransactionIndex = (index) => {
+    setTransactionIndex(index)
+  }
+
+  const handleTransactionWeekday = (weekday) => {
+    setTransactionWeekday(weekday)
+  }
+
+  const handleTransactionValue = (value) => {
+    setTransactionValue(value)
   }
 
   return (
@@ -34,14 +55,21 @@ export default function Listing({ transactions, setTransactions }) {
               className='transaction-edit'
               src={editIcon}
               alt="Edit Icon"
+              onClick={() => {
+                setActiveEditTransactionModal(!activeEditTransactionModal)
+                handleTransactionId(transaction.id)
+                handleTransactionIndex(transactions.indexOf(transaction))
+                handleTransactionWeekday(transaction.weekday)
+                handleTransactionValue(transaction.value)
+              }}
+
             />
 
             <div
               className='transaction-delete'
               src={trashIcon}
               alt="Trash Icon"
-              onClick={() => setDeletePopup(!deletePopup)}
-
+              onClick={() => handleDeleteTransaction(transaction.id)}
             >
               <div
                 className={deletePopup ? "transaction-delete-popup" : "transaction-delete-popup hidden"}

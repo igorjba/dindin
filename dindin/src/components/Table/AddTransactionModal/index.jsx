@@ -81,8 +81,18 @@ export default function AddTransactionModal({ activeAddTransactionModal, setActi
       value: transactionType === 'input' ? `R$${transactionValue}` : `R$-${transactionValue}`,
     }
     setTransactions([...transactions, newTransaction])
-    setTransactionId(transactions[transactions.length - 1].id + 1, 1)
+    setTransactionId(transactionId + 1)
+
     setActiveAddTransactionModal(!activeAddTransactionModal)
+  }
+
+  function handleClearInputs() {
+    setTransactionType('input')
+    setTransactionValue('')
+    setTransactionCategory('')
+    setTransactionDate('')
+    setTransactionWeekday('')
+    setTransactionDescription('')
   }
 
   return (
@@ -154,7 +164,11 @@ export default function AddTransactionModal({ activeAddTransactionModal, setActi
         <div className="modal-footer">
           <button
             className="modal-btn-confirm"
-            onClick={() => handleAddTransaction()}
+            onClick={
+              () => {
+                handleAddTransaction()
+              }
+            }
           >Confirmar</button>
         </div>
       </div>
