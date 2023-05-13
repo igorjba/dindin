@@ -1,118 +1,60 @@
 import './styles.css'
 import { useState } from 'react';
 import api from '../../../services/api';
+import { format } from 'date-fns'
 
-export default function AddTransactionModal({ postTransaction, activeAddTransactionModal, setActiveAddTransactionModal, transactions, setTransactions }) {
-  const [categories, setCategories] = useState([
-    {
-      id: 1,
-      name: 'Pix'
-    },
-    {
-      id: 2,
-      name: 'Lazer'
-    },
-    {
-      id: 3,
-      name: 'Alimentação'
-    },
-    {
-      id: 4,
-      name: 'TED'
-    },
-    {
-      id: 5,
-      name: 'Contas'
-    },
-    {
-      id: 6,
-      name: 'Depósito'
-    },
-    {
-      id: 7,
-      name: 'Mercado'
-    },
-    {
-      id: 8,
-      name: 'Farmácia'
-    },
-  ])
-  const [transactionType, setTransactionType] = useState('input')
-  const [transactionValue, setTransactionValue] = useState('')
-  const [transactionCategory, setTransactionCategory] = useState('')
-  const [transactionDate, setTransactionDate] = useState('')
-  const [transactionWeekday, setTransactionWeekday] = useState('')
-  const [transactionDescription, setTransactionDescription] = useState('')
-  const [transactionId, setTransactionId] = useState(0)
+export default function AddTransactionModal({ categories, postTransaction, activeAddTransactionModal, setActiveAddTransactionModal, transactions, setTransactions }) {
 
-  // async function postTransaction() {
-  //   const data = {
-  //     tipo: "entrada",
-  //     descricao: "Salário",
-  //     valor: 300000,
-  //     data: "2022-03-24T15:30:00.000Z",
-  //     categoria_id: 5
-  //   };
-  //   const token = getItem('token');
-  //   let response;
-  //   try {
-  //     response = await api.post('/transacao', data, { headers: { Authorization: `Bearer ${token}` } });
-  //   } catch (error) {
-  //     makeLogout();
-  //   }
-  //   return updateTransactions();
-  // }
+  //preencher os inputs com os dados da transação selecionada enviar formatados para a api
+  const [transactionType, setTransactionType] = useState('input');
+  const [transactionValue, setTransactionValue] = useState('');
+  const [transactionCategory, setTransactionCategory] = useState('');
+  const [transactionDate, setTransactionDate] = useState('');
+  const [transactionDescription, setTransactionDescription] = useState('');
 
   function handleTransactionType(type) {
-    setTransactionType(type)
+    setTransactionType(type);
   }
 
   function handleTransactionValue(value) {
-    setTransactionValue(value)
+    setTransactionValue(value);
   }
 
   function handleTransactionCategory(category) {
-    setTransactionCategory(category)
+    setTransactionCategory(category);
   }
 
   function handleTransactionDate(date) {
-    const [year, month, day] = date.split('-');
-    const formattedDate = `${day}/${month}/${year.slice(-2)}`;
-    setTransactionDate(formattedDate)
-
-    const dateObj = new Date(date);
-    const weekday = dateObj.toLocaleDateString('pt-BR', { weekday: 'long' }).replace('-feira', '');
-    setTransactionWeekday(weekday);
+    setTransactionDate(date);
   }
 
   function handleTransactionDescription(description) {
-    setTransactionDescription(description)
+    setTransactionDescription(description);
   }
 
-  function handleAddTransaction() {
-    const newTransaction = {
-      id: transactionId,
-      type: transactionType,
-      description: transactionDescription,
-      date: transactionDate,
-      category: transactionCategory,
-      weekday: transactionWeekday,
-      value: transactionType === 'input' ? `R$${transactionValue}` : `R$-${transactionValue}`,
+
+  async function handleAddTransaction() {
+    const token = localStorage.getItem('token');
+    const date = format(new Date(transactionDate), 'yyyy-MM-dd');
+    const body = {
+      valor: transactionValue,
+      tipo: transactionType,
+      categoria: transactionCategory,
+      data: date,
+      descricao: transactionDescription
     }
-    setTransactions([...transactions, newTransaction])
-    setTransactionId(transactionId + 1)
-
-    setActiveAddTransactionModal(!activeAddTransactionModal)
+    try {
+      const response = await api.post('/transacao', body, { headers: { Authorization: `Bearer ${token}` } });
+      const { id, tipo: type, descricao: description, valor: value, data: date, usuario_id: userid, categoria_id: categoryid, categoria_nome: categoryname } = response.data;
+      const transaction = { id, type, description, value, date, userid, categoryid, categoryname };
+      postTransaction(transaction);
+      setActiveAddTransactionModal(!activeAddTransactionModal);
+    } catch (error) {
+      window.alert(error.response.data.mensagem);
+    }
   }
 
-  function handleClearInputs() {
-    setTransactionType('input')
-    setTransactionValue('')
-    setTransactionCategory('')
-    setTransactionDate('')
-    setTransactionWeekday('')
-    setTransactionDescription('')
-  }
+
 
   return (
     <div className={activeAddTransactionModal ? "modal-add-transaction" : "modal-add-transaction hidden"}>
@@ -183,11 +125,7 @@ export default function AddTransactionModal({ postTransaction, activeAddTransact
         <div className="modal-footer">
           <button
             className="modal-btn-confirm"
-            onClick={
-              () => {
-                handleAddTransaction()
-              }
-            }
+            onClick={() => handleAddTransaction()}
           >Confirmar</button>
         </div>
       </div>

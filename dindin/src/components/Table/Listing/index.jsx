@@ -7,6 +7,7 @@ import { useState } from 'react';
 export default function Listing({ transactions, activeFilters, setTransactions, activeEditTransactionModal, setActiveEditTransactionModal }) {
 
   const [deletePopup, setDeletePopup] = useState(false)
+
   const handleDeleteTransaction = (id) => {
     const newTransactions = transactions.filter((transaction) => transaction.id !== id)
     setTransactions(newTransactions)
@@ -67,8 +68,6 @@ export default function Listing({ transactions, activeFilters, setTransactions, 
       </div>
     </li>
   }
-  // figure out how to make the content perfectly aligned with the headers
-  // max-width for each section?
   return (
     <div className='table-list'>
       {pickTransactions().map(transaction => spawnTransaction(transaction))}

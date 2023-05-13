@@ -1,8 +1,9 @@
 import './styles.css'
 import { useState } from 'react';
 import api from '../../../services/api';
+import { format } from 'date-fns'
 
-export default function EditTransactionModal({ activeEditTransactionModal, setActiveEditTransactionModal, transactions, setTransactions }) {
+export default function EditTransactionModal({ categories, activeEditTransactionModal, setActiveEditTransactionModal, transactions, setTransactions }) {
   const [transactionType, setTransactionType] = useState('input')
   const [transactionValue, setTransactionValue] = useState('')
   const [transactionCategory, setTransactionCategory] = useState('')
@@ -10,40 +11,40 @@ export default function EditTransactionModal({ activeEditTransactionModal, setAc
   const [transactionWeekday, setTransactionWeekday] = useState('')
   const [transactionDescription, setTransactionDescription] = useState('')
   const [transactionId, setTransactionId] = useState(0)
-  const [categories, setCategories] = useState([
-    {
-      id: 1,
-      name: 'Pix'
-    },
-    {
-      id: 2,
-      name: 'Lazer'
-    },
-    {
-      id: 3,
-      name: 'Alimentação'
-    },
-    {
-      id: 4,
-      name: 'TED'
-    },
-    {
-      id: 5,
-      name: 'Contas'
-    },
-    {
-      id: 6,
-      name: 'Depósito'
-    },
-    {
-      id: 7,
-      name: 'Mercado'
-    },
-    {
-      id: 8,
-      name: 'Farmácia'
-    },
-  ])
+  // const [categories, setCategories] = useState([
+  //   {
+  //     id: 1,
+  //     name: 'Pix'
+  //   },
+  //   {
+  //     id: 2,
+  //     name: 'Lazer'
+  //   },
+  //   {
+  //     id: 3,
+  //     name: 'Alimentação'
+  //   },
+  //   {
+  //     id: 4,
+  //     name: 'TED'
+  //   },
+  //   {
+  //     id: 5,
+  //     name: 'Contas'
+  //   },
+  //   {
+  //     id: 6,
+  //     name: 'Depósito'
+  //   },
+  //   {
+  //     id: 7,
+  //     name: 'Mercado'
+  //   },
+  //   {
+  //     id: 8,
+  //     name: 'Farmácia'
+  //   },
+  // ])
 
   function handleTransactionType(type) {
     setTransactionType(type)
@@ -58,13 +59,9 @@ export default function EditTransactionModal({ activeEditTransactionModal, setAc
   }
 
   function handleTransactionDate(date) {
-    const [year, month, day] = date.split('-');
-    const formattedDate = `${day}/${month}/${year.slice(-2)}`;
-    setTransactionDate(formattedDate)
-
-    const dateObj = new Date(date);
-    const weekday = dateObj.toLocaleDateString('pt-BR', { weekday: 'long' }).replace('-feira', '');
-    setTransactionWeekday(weekday);
+    setTransactionDate(date)
+    const weekday = format(new Date(date), 'eeee');
+    setTransactionWeekday(weekday)
   }
 
   function handleTransactionDescription(description) {
