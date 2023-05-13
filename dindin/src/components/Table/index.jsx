@@ -114,14 +114,14 @@ export default function Table({ makeLogout }) {
         />
 
         <AddTransactionModal
-          setActiveAddTransactionModal={setActiveAddTransactionModal}
-          activeAddTransactionModal={activeAddTransactionModal}
+          setActiveAddTransactionModal={setActiveAddTransactionModal} activeAddTransactionModal={activeAddTransactionModal}
           transactions={transactions} setTransactions={setTransactions}
+          categories={categories} postTransaction={postTransaction}
         />
         <EditTransactionModal
-          setActiveEditTransactionModal={setActiveEditTransactionModal}
-          activeEditTransactionModal={activeEditTransactionModal}
+          setActiveEditTransactionModal={setActiveEditTransactionModal} activeEditTransactionModal={activeEditTransactionModal}
           transactions={transactions} setTransactions={setTransactions}
+          categories={categories} postTransaction={postTransaction}
 
         />
       </div>
