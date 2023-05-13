@@ -49,7 +49,7 @@
 
 .transaction-delete-popup {
     position: absolute;
-    display: none;
+    display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;

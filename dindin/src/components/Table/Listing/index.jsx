@@ -3,8 +3,12 @@ import editIcon from '../../../assets/edit-icon.svg';
 import trashIcon from '../../../assets/trash-icon.svg';
 import { format } from 'date-fns';
 
-
-export default function Listing( { transactions, activeFilters } ) {
+export default function Listing( { transactions, activeFilters, setTransactions, activeEditTransactionModal, setActiveEditTransactionModal } ) {
+ const [deletePopup, setDeletePopup] = useState(false)
+  const handleDeleteTransaction = (id) => {
+    const newTransactions = transactions.filter((transaction) => transaction.id !== id)
+    setTransactions(newTransactions)
+  }
 
   function pickTransactions() {
     const filteredTransactions = transactions.filter(transaction => activeFilters[transaction.categoryname]);
@@ -34,14 +38,20 @@ export default function Listing( { transactions, activeFilters } ) {
         className='transaction-edit'
         src={editIcon}
         alt="Edit Icon"
+  onClick={() => {
+                setActiveEditTransactionModal(!activeEditTransactionModal)
+                 }}
       />
 
       <div
         className='transaction-delete'
         src={trashIcon}
         alt="Trash Icon"
+  onClick={() => handleDeleteTransaction(transaction.id)}
       >
-        <div className="transaction-delete-popup">
+        <div
+                className={deletePopup ? "transaction-delete-popup" : "transaction-delete-popup hidden"}
+              >
           <div className='popup-rectangle'>
             <div className='popup-triangle'></div>
             <span className="transaction-edit-popup-text">Apagar item?</span>
