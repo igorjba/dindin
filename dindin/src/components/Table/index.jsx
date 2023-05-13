@@ -102,10 +102,6 @@ export default function Table( { makeLogout } ) {
   const [activeAddTransactionModal, setActiveAddTransactionModal] = useState(false);
   const [activeEditTransactionModal, setActiveEditTransactionModal] = useState(false);
 
-  const [transactions, setTransactions] = useState([
-    
-  ])
-
 
   return (
     <main>

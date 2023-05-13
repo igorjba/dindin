@@ -11,7 +11,7 @@ import api from '../services/api';
 
 export default function MainRoutes() {
 
-    const [user, setUser] = useState(null);  // call only in login, logout or invalid token thru api response.
+    const [user, setUser] = useState(null);
 
     useEffect(() => {
         async function getAuth() {
@@ -44,7 +44,7 @@ export default function MainRoutes() {
 
     return (
         <div className='app' style={user ? {backgroundImage: `url(${InsideBackground})`} : {backgroundImage: `url(${OutsideBackground})`}}>
-        <Header logged={user ? true : false} user={user ? user.name : ''} makeLogout={makeLogout}/>
+        <Header logged={user ? true : false} user={user} makeLogout={makeLogout} setUser={setUser}/>
         <Routes>
             <Route path='/' element={
                 <RequireNotAuth redirectTo='/home'>

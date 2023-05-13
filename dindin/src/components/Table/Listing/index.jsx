@@ -2,6 +2,7 @@ import './styles.css';
 import editIcon from '../../../assets/edit-icon.svg';
 import trashIcon from '../../../assets/trash-icon.svg';
 import { format } from 'date-fns';
+import { useState } from 'react';
 
 export default function Listing( { transactions, activeFilters, setTransactions, activeEditTransactionModal, setActiveEditTransactionModal } ) {
  const [deletePopup, setDeletePopup] = useState(false)
