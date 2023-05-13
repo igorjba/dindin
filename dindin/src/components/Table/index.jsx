@@ -15,6 +15,12 @@ export default function Table( { makeLogout } ) {
     updateTransactions();
   }, []);
 
+  function updateFilters(localCategories) {
+    const localFilters = {};
+    localCategories.forEach(category => localFilters[category] = true);
+    return setActiveFilters(localFilters);
+  }
+
   async function updateTransactions() {
 
     const token = getItem('token');
@@ -37,15 +43,16 @@ export default function Table( { makeLogout } ) {
 
       setTransactions(localTransactions);
       updateSummary(localTransactions);
-      return updateCategories(localTransactions);
+      updateCategoriesAndFilters(localTransactions);
     }
 
     return;
   }
 
-  function updateCategories(localTransactions) {
-    const localCategories = [];54
+  function updateCategoriesAndFilters(localTransactions) {
+    const localCategories = [];
     localTransactions.forEach( transaction => localCategories.indexOf(transaction.categoryname) < 0 ? localCategories.push(transaction.categoryname) : false);
+    updateFilters(localCategories);
     return setCategories(localCategories);
   }
 
@@ -99,7 +106,7 @@ export default function Table( { makeLogout } ) {
       <div className='table'>
         <Filter setActiveFilters={setActiveFilters} categories={categories} filterStart={filterStart} />
         <TableHeader />
-        <Listing transactions={transactions}/>
+        <Listing transactions={transactions} activeFilters={activeFilters}/>
         <AddTransactionModal
           setActiveAddTransactionModal={setActiveAddTransactionModal}
           activeAddTransactionModal={activeAddTransactionModal}
