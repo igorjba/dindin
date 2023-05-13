@@ -1,5 +1,6 @@
 import './styles.css'
 import { useState } from 'react';
+import api from '../../../services/api';
 
 export default function EditTransactionModal({ activeEditTransactionModal, setActiveEditTransactionModal, transactions, setTransactions }) {
   const [transactionType, setTransactionType] = useState('input')
