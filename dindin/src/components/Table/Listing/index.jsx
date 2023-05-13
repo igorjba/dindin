@@ -4,7 +4,12 @@ import trashIcon from '../../../assets/trash-icon.svg';
 import { format } from 'date-fns';
 
 
-export default function Listing( { transactions } ) {
+export default function Listing( { transactions, activeFilters } ) {
+
+  function pickTransactions() {
+    const filteredTransactions = transactions.filter(transaction => activeFilters[transaction.categoryname]);
+    return filteredTransactions;
+  }
 
   function spawnTransaction(transaction) {
     const date = format(new Date(transaction.date), 'dd/MM/uuuu');
@@ -53,8 +58,8 @@ export default function Listing( { transactions } ) {
 // figure out how to make the content perfectly aligned with the headers
 // max-width for each section?
   return (
-    <div className='table-list' style={{width: '100%'}}>
-      {transactions.map(transaction => spawnTransaction(transaction))}
+    <div className='table-list'>
+      { pickTransactions().map(transaction => spawnTransaction(transaction))}
     </div >
   )
 }
