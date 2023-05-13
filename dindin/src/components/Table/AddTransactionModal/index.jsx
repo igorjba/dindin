@@ -1,7 +1,8 @@
 import './styles.css'
 import { useState } from 'react';
+import api from '../../../services/api';
 
-export default function AddTransactionModal({ activeAddTransactionModal, setActiveAddTransactionModal, transactions, setTransactions }) {
+export default function AddTransactionModal({ postTransaction, activeAddTransactionModal, setActiveAddTransactionModal, transactions, setTransactions }) {
   const [categories, setCategories] = useState([
     {
       id: 1,
@@ -43,6 +44,24 @@ export default function AddTransactionModal({ activeAddTransactionModal, setActi
   const [transactionWeekday, setTransactionWeekday] = useState('')
   const [transactionDescription, setTransactionDescription] = useState('')
   const [transactionId, setTransactionId] = useState(0)
+
+  // async function postTransaction() {
+  //   const data = {
+  //     tipo: "entrada",
+  //     descricao: "Salário",
+  //     valor: 300000,
+  //     data: "2022-03-24T15:30:00.000Z",
+  //     categoria_id: 5
+  //   };
+  //   const token = getItem('token');
+  //   let response;
+  //   try {
+  //     response = await api.post('/transacao', data, { headers: { Authorization: `Bearer ${token}` } });
+  //   } catch (error) {
+  //     makeLogout();
+  //   }
+  //   return updateTransactions();
+  // }
 
   function handleTransactionType(type) {
     setTransactionType(type)

@@ -1,9 +1,10 @@
 .transaction {
-    display: flex;
-    justify-content: space-between;
     position: relative;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
 
-    padding: 20px 27px;
+    padding: 20px;
     height: 69px;
     border-bottom: 1px solid var(--grayish-white);
 
@@ -13,10 +14,47 @@
 }
 
 .transaction-date {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+
+    width: 135.5px;
+
     font-weight: var(--font-weight-bold);
 }
 
+.transaction-weekday {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 173.5px;
+}
+
+.transaction-description {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 210.5px;
+}
+
+.transaction-category {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 153.5px;
+    margin-right: 20px;
+}
+
 .transaction-value {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 173.5px;
+
     font-weight: var(--font-weight-bold);
 }
 
@@ -25,8 +63,6 @@
     justify-content: center;
     align-items: center;
     gap: 15px;
-
-    margin-left: -70px;
 }
 
 .transaction-edit {

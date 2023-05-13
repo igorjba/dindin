@@ -15,7 +15,7 @@ export default function TableHeader() {
       <strong>Dia da semana</strong>
       <strong>Descrição</strong>
       <strong>Categoria</strong>
-      <strong>Valor</strong>
+      <strong className='header-value'>Valor</strong>
       <strong></strong>
     </div>
   )

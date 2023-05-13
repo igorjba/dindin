@@ -9,7 +9,7 @@ import { useState, useEffect, useRef } from 'react';
 import { getItem } from '../../utils/storage';
 import api from '../../services/api';
 
-export default function Table( { makeLogout } ) {
+export default function Table({ makeLogout }) {
 
   useEffect(() => {
     updateTransactions();
@@ -26,18 +26,18 @@ export default function Table( { makeLogout } ) {
     const token = getItem('token');
     let response;
     try {
-        response = await api.get('/transacao', {headers: {Authorization: `Bearer ${token}`}});
+      response = await api.get('/transacao', { headers: { Authorization: `Bearer ${token}` } });
     } catch (error) {
-        window.alert(error.response.data.mensagem);
-        makeLogout();
+      window.alert(error.response.data.mensagem);
+      makeLogout();
     }
 
-    if (response){
+    if (response) {
       const localTransactions = [];
 
       for (let i = 0; i < response.data.length; i++) {
-        const {id, tipo: type, descricao: description, valor: value, data: date, usuario_id: userid, categoria_id: categoryid, categoria_nome: categoryname} = response.data[i];
-        const transaction = {id, type, description, value, date, userid, categoryid, categoryname};
+        const { id, tipo: type, descricao: description, valor: value, data: date, usuario_id: userid, categoria_id: categoryid, categoria_nome: categoryname } = response.data[i];
+        const transaction = { id, type, description, value, date, userid, categoryid, categoryname };
         localTransactions.push(transaction);
       }
 
@@ -51,7 +51,7 @@ export default function Table( { makeLogout } ) {
 
   function updateCategoriesAndFilters(localTransactions) {
     const localCategories = [];
-    localTransactions.forEach( transaction => localCategories.indexOf(transaction.categoryname) < 0 ? localCategories.push(transaction.categoryname) : false);
+    localTransactions.forEach(transaction => localCategories.indexOf(transaction.categoryname) < 0 ? localCategories.push(transaction.categoryname) : false);
     updateFilters(localCategories);
     return setCategories(localCategories);
   }
@@ -84,7 +84,7 @@ export default function Table( { makeLogout } ) {
     const token = getItem('token');
     let response;
     try {
-      response = await api.post('/transacao', data, { headers: {Authorization: `Bearer ${token}`} });
+      response = await api.post('/transacao', data, { headers: { Authorization: `Bearer ${token}` } });
     } catch (error) {
       makeLogout();
     }
@@ -101,7 +101,6 @@ export default function Table( { makeLogout } ) {
 
   const [activeAddTransactionModal, setActiveAddTransactionModal] = useState(false);
   const [activeEditTransactionModal, setActiveEditTransactionModal] = useState(false);
-
 
   return (
     <main>
