@@ -5,115 +5,105 @@ import TableHeader from './TableHeader';
 import Summary from './Summary';
 import AddTransactionModal from './AddTransactionModal';
 import EditTransactionModal from './EditTransactionModal';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { getItem } from '../../utils/storage';
+import api from '../../services/api';
 
-export default function Table() {
+export default function Table( { makeLogout } ) {
 
-  // get input data from api, generate categories, filterStart, summary, 
+  useEffect(() => {
+    updateTransactions();
+  }, []);
 
-  const categories = ['contas', 'depósito', 'água', 'lazer', 'mercado', 'TED', 'compras', 'farmácia', 'PIX'];
+  function updateFilters(localCategories) {
+    const localFilters = {};
+    localCategories.forEach(category => localFilters[category] = true);
+    return setActiveFilters(localFilters);
+  }
+
+  async function updateTransactions() {
+
+    const token = getItem('token');
+    let response;
+    try {
+        response = await api.get('/transacao', {headers: {Authorization: `Bearer ${token}`}});
+    } catch (error) {
+        window.alert(error.response.data.mensagem);
+        makeLogout();
+    }
+
+    if (response){
+      const localTransactions = [];
+
+      for (let i = 0; i < response.data.length; i++) {
+        const {id, tipo: type, descricao: description, valor: value, data: date, usuario_id: userid, categoria_id: categoryid, categoria_nome: categoryname} = response.data[i];
+        const transaction = {id, type, description, value, date, userid, categoryid, categoryname};
+        localTransactions.push(transaction);
+      }
+
+      setTransactions(localTransactions);
+      updateSummary(localTransactions);
+      updateCategoriesAndFilters(localTransactions);
+    }
+
+    return;
+  }
+
+  function updateCategoriesAndFilters(localTransactions) {
+    const localCategories = [];
+    localTransactions.forEach( transaction => localCategories.indexOf(transaction.categoryname) < 0 ? localCategories.push(transaction.categoryname) : false);
+    updateFilters(localCategories);
+    return setCategories(localCategories);
+  }
+
+  function updateSummary(localTransactions) {
+    let inflows = 0;
+    let outflows = 0;
+
+    for (let i = 0; i < localTransactions.length; i++) {
+      if (localTransactions[i].type === 'entrada') inflows += localTransactions[i].value;
+      else outflows += localTransactions[i].value;
+    }
+
+    const balance = inflows - outflows;
+
+    summaryRef.current.inflows = (inflows / 100);
+    summaryRef.current.outflows = (outflows / 100);
+    summaryRef.current.balance = (balance / 100);
+    return;
+  }
+
+  async function postTransaction() {
+    const data = {
+      tipo: "entrada",
+      descricao: "Salário",
+      valor: 300000,
+      data: "2022-03-24T15:30:00.000Z",
+      categoria_id: 5
+    };
+    const token = getItem('token');
+    let response;
+    try {
+      response = await api.post('/transacao', data, { headers: {Authorization: `Bearer ${token}`} });
+    } catch (error) {
+      makeLogout();
+    }
+    return updateTransactions();
+  }
+
+  const [categories, setCategories] = useState([]);
+  const [transactions, setTransactions] = useState([]);
+  const summaryRef = useRef({ inflows: 0, outflows: 0, balance: 0 });
+
   const filterStart = {};
   categories.forEach(category => filterStart[category] = true);
   const [activeFilters, setActiveFilters] = useState(filterStart);
-
-  const summary = { inflows: 200, outflows: 70.5, balance: 129.5 };
 
   const [activeAddTransactionModal, setActiveAddTransactionModal] = useState(false);
   const [activeEditTransactionModal, setActiveEditTransactionModal] = useState(false);
 
   const [transactions, setTransactions] = useState([
-    // {
-    //   id: 1,
-    //   date: '01/09/21',
-    //   type: 'input',
-    //   weekday: 'Quarta',
-    //   description: 'Venda dos brigadeiros',
-    //   category: 'Pix',
-    //   value: 'R$10000,00',
-    // }
-    // ,
-    // {
-    //   id: 2,
-    //   date: '01/09/21',
-    //   type: 'input',
-    //   weekday: 'Quarta',
-    //   description: 'Venda dos brigadeiros',
-    //   category: 'Pix',
-    //   value: 'R$100,00',
-    // },
-    // {
-    //   id: 3,
-    //   date: '01/09/21',
-    //   type: 'output',
-    //   weekday: 'Quarta',
-    //   description: 'Venda dos brigadeiros',
-    //   category: 'Pix',
-    //   value: '-R$100,00'
-    // },
-    // {
-    //   id: 4,
-    //   date: '01/09/21',
-    //   type: 'output',
-    //   weekday: 'Quarta',
-    //   description: 'Venda dos brigadeiros',
-    //   category: 'Pix',
-    //   value: '-R$100,00'
-    // },
-    // {
-    //   id: 5,
-    //   date: '01/09/21',
-    //   type: 'input',
-    //   weekday: 'Quarta',
-    //   description: 'Venda dos brigadeiros',
-    //   category: 'Pix',
-    //   value: 'R$100,00',
-    // },
-    // {
-    //   id: 6,
-    //   date: '01/09/21',
-    //   type: 'input',
-    //   weekday: 'Quarta',
-    //   description: 'Venda dos brigadeiros',
-    //   category: 'Pix',
-    //   value: 'R$100,00',
-    // },
-    // {
-    //   id: 7,
-    //   date: '01/09/21',
-    //   type: 'input',
-    //   weekday: 'Quarta',
-    //   description: 'Venda dos brigadeiros',
-    //   category: 'Pix',
-    //   value: 'R$100,00',
-    // },
-    // {
-    //   id: 8,
-    //   date: '01/09/21',
-    //   type: 'input',
-    //   weekday: 'Quarta',
-    //   description: 'Venda dos brigadeiros',
-    //   category: 'Pix',
-    //   value: 'R$100,00',
-    // },
-    // {
-    //   id: 9,
-    //   date: '01/09/21',
-    //   type: 'input',
-    //   weekday: 'Quarta',
-    //   description: 'Venda dos brigadeiros',
-    //   category: 'Pix',
-    //   value: 'R$100,00',
-    // },
-
-    // {
-    //   id: 10,
-    //   date: '01/09/21',
-    //   type: 'output',
-    //   weekday: 'Quarta',
-    //   description: 'Venda dos brigadeiros',
-    //   category: 'Pix',
-    //   value: '-R$100,00',
-    // }
+    
   ])
 
 
@@ -125,8 +115,9 @@ export default function Table() {
         <Listing transactions={transactions} setTransactions={setTransactions}
           setActiveEditTransactionModal={setActiveEditTransactionModal}
           activeEditTransactionModal={activeEditTransactionModal}
-
+          activeFilters={activeFilters}
         />
+
         <AddTransactionModal
           setActiveAddTransactionModal={setActiveAddTransactionModal}
           activeAddTransactionModal={activeAddTransactionModal}
@@ -140,7 +131,7 @@ export default function Table() {
         />
       </div>
       <Summary
-        summary={summary}
+        summaryRef={summaryRef}
         setActiveAddTransactionModal={setActiveAddTransactionModal}
         activeAddTransactionModal={activeAddTransactionModal}
       />
