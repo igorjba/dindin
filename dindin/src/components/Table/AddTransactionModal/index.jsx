@@ -1,11 +1,11 @@
 import { useState } from 'react';
+import { NumericFormat } from 'react-number-format';
 import api from '../../../services/api';
 import { getItem } from '../../../utils/storage';
-import { NumericFormat } from 'react-number-format';
 import './styles.css';
 
 export default function AddTransactionModal({ allCategories, updateTransactions, activeAddTransactionModal, setActiveAddTransactionModal }) {
-  const [record, setRecord] = useState({ value: 0, category: '', date: '', description: '', type: 'entrada' });
+  const [record, setRecord] = useState({ value: '', category: '', date: '', description: '', type: 'entrada' });
   const [error, setError] = useState('');
 
   function handleInput(event) {
@@ -32,7 +32,7 @@ export default function AddTransactionModal({ allCategories, updateTransactions,
 
   async function postTransaction() {
     const { value, category, date, description, type } = record;
-    const formattedValue = +value.replace(',', '.') * 100;
+    const formattedValue = value * 100;
     const dateArray = date.split('-');
     const timestamp = new Date(dateArray[0], dateArray[1] - 1, dateArray[2]);
     const data = {
@@ -90,14 +90,8 @@ export default function AddTransactionModal({ allCategories, updateTransactions,
               className="modal-value-input"
               name='value'
               prefix="R$ "
+              placeholder='R$ 0,00'
             />
-            {/* <input
-              type="number"
-              id="value"
-              className="modal-value-input"
-              onChange={handleInput}
-              name='value'
-            /> */}
           </div>
           <div className="modal-category">
             <label htmlFor='category' className="modal-category-text input-label">Categoria</label>
