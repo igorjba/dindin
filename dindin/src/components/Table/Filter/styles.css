@@ -16,6 +16,10 @@
     cursor: pointer;
 }
 
+.filter-btn:hover {
+    background-color: #B9B9B9;
+}
+
 .filter-icon {
     width: 14px;
     height: 14px;
@@ -75,6 +79,10 @@
     cursor: pointer;
 }
 
+.category:hover {
+    background-color: #B9B9B9;
+}
+
 .categories-btns {
     display: flex;
     gap: 18px;
@@ -95,9 +103,17 @@
     color: black;
 }
 
+.clear:hover {
+    background-color: #B9B9B9;
+}
+
 .apply {
     background-color: var(--button-color);
     ;
+}
+
+.apply:hover {
+    opacity: 0.9;
 }
 
 .selected {

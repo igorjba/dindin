@@ -71,6 +71,10 @@ button {
   text-transform: capitalize;
 }
 
+button:hover {
+  opacity: 0.9;
+}
+
 /* add btn click and hover fx */
 
 #root {

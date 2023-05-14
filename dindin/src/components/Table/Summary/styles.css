@@ -100,6 +100,10 @@
     font-size: 14px;
 }
 
+.btn-add-record:hover {
+    opacity: 0.9;
+}
+
 .balance-container {
     display: flex;
     align-items: center;
