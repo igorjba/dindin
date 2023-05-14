@@ -76,8 +76,6 @@ export default function Listing({ transactions, activeFilters, setTransactions, 
       </div>
     </li>
   }
-  // figure out how to make the content perfectly aligned with the headers
-  // max-width for each section?
   return (
     <div className='table-list'>
       {pickTransactions().map(transaction => spawnTransaction(transaction))}
