@@ -79,7 +79,7 @@ export default function Table({ makeLogout }) {
     let response;
     const token = getItem('token');
     try {
-      response = await api.get('/categoria', {headers: {Authorization: `Bearer ${token}`}});
+      response = await api.get('/categoria', { headers: { Authorization: `Bearer ${token}` } });
     } catch (error) {
       window.alert(error);
     }
@@ -100,6 +100,8 @@ export default function Table({ makeLogout }) {
 
   const [showRecordModal, setShowRecordModal] = useState(false);
   const [allCategories, setAllCategories] = useState([]);
+  //enviar o id da transação do listing para o modal de edição.
+  const [transactionId, setTransactionId] = useState({});
 
   return (
     <main>
@@ -111,26 +113,29 @@ export default function Table({ makeLogout }) {
           activeEditTransactionModal={activeEditTransactionModal}
           activeFilters={activeFilters}
           updateTransactions={updateTransactions}
-        />
+          setTransactionId={setTransactionId}
 
-{/*
+        />
         <AddTransactionModal
           setActiveAddTransactionModal={setActiveAddTransactionModal} activeAddTransactionModal={activeAddTransactionModal}
           transactions={transactions} setTransactions={setTransactions}
-          categories={categories} postTransaction={postTransaction}
+          allCategories={allCategories}
+          updateTransactions={updateTransactions}
         />
-        <EditTransactionModal
+        {activeEditTransactionModal && <EditTransactionModal
           setActiveEditTransactionModal={setActiveEditTransactionModal} activeEditTransactionModal={activeEditTransactionModal}
           transactions={transactions} setTransactions={setTransactions}
-          categories={categories} postTransaction={postTransaction}
+          allCategories={allCategories}
+          updateTransactions={updateTransactions}
+          transactionId={transactionId}
 
-        /> */}
-        {showRecordModal &&
-        <RecordModal
-        updateTransactions={updateTransactions}
-        showRecordModal={showRecordModal}
-        setShowRecordModal={setShowRecordModal}
-        allCategories={allCategories}/>}
+        /> }
+        {/* {showRecordModal &&
+          <RecordModal
+            updateTransactions={updateTransactions}
+            showRecordModal={showRecordModal}
+            setShowRecordModal={setShowRecordModal}
+            allCategories={allCategories} />} */}
       </div>
       <Summary
         summaryRef={summaryRef}
