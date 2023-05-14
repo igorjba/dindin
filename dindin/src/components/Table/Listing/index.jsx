@@ -3,13 +3,22 @@ import editIcon from '../../../assets/edit-icon.svg';
 import trashIcon from '../../../assets/trash-icon.svg';
 import { format } from 'date-fns';
 import { useState } from 'react';
+import api from '../../../services/api';
+import { getItem } from '../../../utils/storage';
 
-export default function Listing({ transactions, activeFilters, setTransactions, activeEditTransactionModal, setActiveEditTransactionModal }) {
+export default function Listing({ transactions, activeFilters, setTransactions, activeEditTransactionModal, setActiveEditTransactionModal, updateTransactions }) {
 
-  const [deletePopup, setDeletePopup] = useState(false)
-  const handleDeleteTransaction = (id) => {
-    const newTransactions = transactions.filter((transaction) => transaction.id !== id)
-    setTransactions(newTransactions)
+  const [deletePopup, setDeletePopup] = useState(false);
+
+  const handleDeleteTransaction = async (id) => {
+    const token = getItem('token');
+    let response;
+    try {
+      response = await api.delete(`/transacao/${id}`, { headers: { Authorization: `Bearer ${token}` } });
+    } catch (error) {
+      window.alert(error.response.data.mensagem);
+    }
+    return updateTransactions();
   }
 
   function pickTransactions() {
@@ -30,9 +39,9 @@ export default function Listing({ transactions, activeFilters, setTransactions, 
       <div className='transaction-description'>{transaction.description}</div>
       <div className='transaction-category'>{transaction.categoryname}</div>
       <div className="transaction-value"
-        style={{ color: transaction.value < 0 ? '#FA8C10' : '#7B61FF' }}
+        style={{ color: transaction.type === 'saida' ? '#FA8C10' : '#7B61FF' }}
       >
-        R$ {transaction.value < 0 ? '-' : ''}{(transaction.value / 100).toFixed(2)}
+        R$ {(transaction.value / 100).toFixed(2)}
       </div>
 
       <div className="transaction-edit-container">
@@ -75,5 +84,3 @@ export default function Listing({ transactions, activeFilters, setTransactions, 
     </div >
   )
 }
-
-
