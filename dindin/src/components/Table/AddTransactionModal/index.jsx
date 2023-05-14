@@ -6,8 +6,6 @@ import './styles.css';
 export default function AddTransactionModal({ allCategories, updateTransactions, activeAddTransactionModal, setActiveAddTransactionModal }) {
   const [record, setRecord] = useState({ value: 0, category: '', date: '', description: '', type: 'entrada' });
   const [error, setError] = useState('');
-  const [success, setSuccess] = useState(false);
-  const [transactionType, setTransactionType] = useState('input');
 
   function handleInput(event) {
     return setRecord({ ...record, [event.target.name]: event.target.value });
@@ -51,28 +49,6 @@ export default function AddTransactionModal({ allCategories, updateTransactions,
       window.alert(error.response.data.mensagem);
     }
 
-    return updateTransactions();
-  }
-
-  async function updateTransaction(id) {
-    const { value, category, date, description, type } = record;
-    const formattedValue = +value.replace(',', '.') * 100;
-    const dateArray = date.split('-');
-    const timestamp = new Date(dateArray[0], dateArray[1] - 1, dateArray[2]);
-    const data = {
-      tipo: type,
-      descricao: description,
-      valor: formattedValue,
-      data: timestamp,
-      categoria_id: +category
-    };
-    const token = getItem('token');
-    let response;
-    try {
-      response = await api.put(`/transacao/${id}`, data, { headers: { Authorization: `Bearer ${token}` } });
-    } catch (error) {
-      window.alert(error.response.data.mensagem);
-    }
     return updateTransactions();
   }
 

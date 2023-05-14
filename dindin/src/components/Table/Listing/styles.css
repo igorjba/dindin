@@ -85,7 +85,7 @@
 
 .transaction-delete-popup {
     position: absolute;
-    display: flex;
+    display: none;
     justify-content: center;
     align-items: center;
     flex-direction: column;
@@ -134,7 +134,6 @@
 
     color: var(--black);
 }
-
 
 .btn-delete-popup-container {
     display: flex;

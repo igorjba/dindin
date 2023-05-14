@@ -1,9 +1,10 @@
 .signup-form {
-    position:relative;
-    display:flex;
+    position: relative;
+    display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
+
     width: 513px;
     height: 781px;
     padding: 55px 30px;
@@ -19,10 +20,11 @@
 }
 
 .input-container {
-    display:flex;
+    display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-around;
+
     height: 100px;
     width: 100%;
 }
@@ -36,6 +38,8 @@
 
 .signup-form span {
     position: absolute;
+
     bottom: 15px;
+
     color: rgb(162, 17, 17)
 }

@@ -1,13 +1,12 @@
-import { useState, useRef, useEffect } from 'react';
+import { format } from 'date-fns';
+import { useEffect, useRef, useState } from 'react';
 import api from '../../../services/api';
 import { getItem } from '../../../utils/storage';
 import './styles.css';
-import { format } from 'date-fns';
 
-export default function EditTransactionModal({ transactionId, transactions, updateTransactions, allCategories, activeEditTransactionModal, setActiveEditTransactionModal }) {
+export default function EditTransactionModal({ transactionId, updateTransactions, allCategories, activeEditTransactionModal, setActiveEditTransactionModal }) {
   const [record, setRecord] = useState({ value: 0, category: '', date: '', description: '', type: '' });
   const [error, setError] = useState('');
-  const [success, setSuccess] = useState(false);
 
   const valueRef = useRef(null);
   const categoryRef = useRef(null);
@@ -15,7 +14,7 @@ export default function EditTransactionModal({ transactionId, transactions, upda
   const descriptionRef = useRef(null);
 
   useEffect(() => {
-    setRecord({...record, type: transactionId.type});
+    setRecord({ ...record, type: transactionId.type });
     const formattedDate = format(new Date(transactionId.date), 'yyyy-MM-dd');
     valueRef.current.value = transactionId.value / 100;
     categoryRef.current.value = transactionId.categoryid;

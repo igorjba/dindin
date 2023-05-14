@@ -107,9 +107,8 @@
     background-color: #B9B9B9;
 }
 
-.apply {
+.apply .first {
     background-color: var(--button-color);
-    ;
 }
 
 .apply:hover {

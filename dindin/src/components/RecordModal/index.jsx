@@ -1,20 +1,19 @@
-import './styles.css';
-import { getItem } from '../../utils/storage';
-import api from '../../services/api';
 import { useState } from 'react';
+import api from '../../services/api';
+import { getItem } from '../../utils/storage';
+import './styles.css';
 
-export default function RecordModal( { updateTransactions, showRecordModal, setShowRecordModal, allCategories } ) {
+export default function RecordModal({ updateTransactions, showRecordModal, setShowRecordModal, allCategories }) {
 
-  const [record, setRecord] = useState({value: 0, category:'', date:'', description:'', type:'entrada'});
+  const [record, setRecord] = useState({ value: 0, category: '', date: '', description: '', type: 'entrada' });
   const [error, setError] = useState('');
-  const [success, setSuccess] = useState(false);
 
   function handleInput(event) {
-    return setRecord({...record, [event.target.name]: event.target.value});
+    return setRecord({ ...record, [event.target.name]: event.target.value });
   }
 
   function handleClick(event) {
-    return setRecord({...record, type: event.target.name});
+    return setRecord({ ...record, type: event.target.name });
   }
 
   function handleSubmit(event) {
@@ -23,18 +22,18 @@ export default function RecordModal( { updateTransactions, showRecordModal, setS
 
     if (!record.value) return setError('Insira o valor');
     if (!record.category) return setError('Insira a categoria');
-    if(!record.date) return setError('Insira uma data');
-    if(!record.description) return setError('Insira uma descrição');
+    if (!record.date) return setError('Insira uma data');
+    if (!record.description) return setError('Insira uma descrição');
 
     postTransaction();
     return updateTransactions();
   }
 
   async function postTransaction() {
-    const { value, category, date, description, type} = record;
+    const { value, category, date, description, type } = record;
     const formattedValue = +value.replace(',', '.') * 100;
     const dateArray = date.split('-');
-    const timestamp = new Date(dateArray[0], dateArray[1]-1, dateArray[2]);
+    const timestamp = new Date(dateArray[0], dateArray[1] - 1, dateArray[2]);
     const data = {
       tipo: type,
       descricao: description,
@@ -46,28 +45,6 @@ export default function RecordModal( { updateTransactions, showRecordModal, setS
     let response;
     try {
       response = await api.post('/transacao', data, { headers: { Authorization: `Bearer ${token}` } });
-    } catch (error) {
-      window.alert(error.response.data.mensagem);
-    }
-    return updateTransactions();
-  }
-
-  async function updateTransaction(id) {
-    const { value, category, date, description, type} = record;
-    const formattedValue = +value.replace(',', '.') * 100;
-    const dateArray = date.split('-');
-    const timestamp = new Date(dateArray[0], dateArray[1]-1, dateArray[2]);
-    const data = {
-      tipo: type,
-      descricao: description,
-      valor: formattedValue,
-      data: timestamp,
-      categoria_id: +category
-    };
-    const token = getItem('token');
-    let response;
-    try {
-      response = await api.put(`/transacao/${id}`, data, { headers: { Authorization: `Bearer ${token}` } });
     } catch (error) {
       window.alert(error.response.data.mensagem);
     }
@@ -118,7 +95,7 @@ export default function RecordModal( { updateTransactions, showRecordModal, setS
               name='category'
             >
               <option key={0} value=''></option>
-              {allCategories.map(category => 
+              {allCategories.map(category =>
                 <option key={category.id} value={category.id}>{category.descricao}</option>
               )}
             </select>

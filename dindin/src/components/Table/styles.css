@@ -29,3 +29,16 @@ main {
     background-color: var(--slightly-grayish-white);
     box-shadow: 0px 2px 11px rgba(0, 0, 0, 0.1);
 }
+
+.first {
+    background-color: var(--button-color);
+}
+
+.selected {
+    background-color: var(--button-color);
+    color: white;
+}
+
+.selected:hover {
+    opacity: 0.9;
+}
