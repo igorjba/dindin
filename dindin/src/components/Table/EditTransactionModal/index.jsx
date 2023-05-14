@@ -1,13 +1,28 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import api from '../../../services/api';
 import { getItem } from '../../../utils/storage';
 import './styles.css';
+import { format } from 'date-fns';
 
 export default function EditTransactionModal({ transactionId, transactions, updateTransactions, allCategories, activeEditTransactionModal, setActiveEditTransactionModal }) {
-  const [record, setRecord] = useState({ value: 0, category: '', date: '', description: '', type: 'entrada' });
+  const [record, setRecord] = useState({ value: 0, category: '', date: '', description: '', type: '' });
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
-  const [transactionType, setTransactionType] = useState('input');
+
+  const valueRef = useRef(null);
+  const categoryRef = useRef(null);
+  const dateRef = useRef(null);
+  const descriptionRef = useRef(null);
+
+  useEffect(() => {
+    setRecord({...record, type: transactionId.type});
+    const formattedDate = format(new Date(transactionId.date), 'yyyy-MM-dd');
+    valueRef.current.value = transactionId.value / 100;
+    categoryRef.current.value = transactionId.categoryid;
+    dateRef.current.value = formattedDate;
+    descriptionRef.current.value = transactionId.description;
+  }, []);
+
 
   function handleInput(event) {
     return setRecord({ ...record, [event.target.name]: event.target.value });
@@ -85,6 +100,8 @@ export default function EditTransactionModal({ transactionId, transactions, upda
               id="value"
               className="modal-value-input"
               onChange={handleInput}
+              name='value'
+              ref={valueRef}
             />
           </div>
           <div className="modal-category">
@@ -95,6 +112,7 @@ export default function EditTransactionModal({ transactionId, transactions, upda
               onChange={handleInput}
               placeholder=''
               name='category'
+              ref={categoryRef}
             >
               <option key={0} value=''></option>
               {allCategories.map(category =>
@@ -110,6 +128,8 @@ export default function EditTransactionModal({ transactionId, transactions, upda
               type="date"
               id='date'
               onChange={handleInput}
+              name='date'
+              ref={dateRef}
             />
           </div>
           <div className="modal-description">
@@ -120,6 +140,8 @@ export default function EditTransactionModal({ transactionId, transactions, upda
               maxLength={21}
               id='description'
               onChange={handleInput}
+              name='description'
+              ref={descriptionRef}
             />
           </div>
         </div>
@@ -127,7 +149,6 @@ export default function EditTransactionModal({ transactionId, transactions, upda
           <button
             className="modal-btn-confirm"
             onClick={handleSubmit}
-
           >Confirmar</button>
         </div>
       </div>

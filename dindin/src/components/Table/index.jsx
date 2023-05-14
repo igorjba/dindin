@@ -101,7 +101,7 @@ export default function Table({ makeLogout }) {
   const [showRecordModal, setShowRecordModal] = useState(false);
   const [allCategories, setAllCategories] = useState([]);
   //enviar o id da transação do listing para o modal de edição.
-  const [transactionId, setTransactionId] = useState(0);
+  const [transactionId, setTransactionId] = useState({});
 
   return (
     <main>
@@ -122,14 +122,14 @@ export default function Table({ makeLogout }) {
           allCategories={allCategories}
           updateTransactions={updateTransactions}
         />
-        <EditTransactionModal
+        {activeEditTransactionModal && <EditTransactionModal
           setActiveEditTransactionModal={setActiveEditTransactionModal} activeEditTransactionModal={activeEditTransactionModal}
           transactions={transactions} setTransactions={setTransactions}
           allCategories={allCategories}
           updateTransactions={updateTransactions}
           transactionId={transactionId}
 
-        />
+        /> }
         {/* {showRecordModal &&
           <RecordModal
             updateTransactions={updateTransactions}
