@@ -6,9 +6,15 @@ import { useState } from 'react';
 import api from '../../../services/api';
 import { getItem } from '../../../utils/storage';
 
-export default function Listing({ transactions, activeFilters, setTransactions, activeEditTransactionModal, setActiveEditTransactionModal, updateTransactions }) {
+export default function Listing({ transactions, activeFilters, setTransactionId, setTransactions, activeEditTransactionModal, setActiveEditTransactionModal, updateTransactions }) {
+  //enviar o id da transação do listing para o modal de edição.
 
   const [deletePopup, setDeletePopup] = useState(false);
+
+  const handleGetTransactionId = (id) => {
+    setTransactionId(id);
+  }
+
 
   const handleDeleteTransaction = async (id) => {
     const token = getItem('token');
@@ -51,6 +57,7 @@ export default function Listing({ transactions, activeFilters, setTransactions, 
           alt="Edit Icon"
           onClick={() => {
             setActiveEditTransactionModal(!activeEditTransactionModal)
+            handleGetTransactionId(transaction.id)
           }}
         />
 

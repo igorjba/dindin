@@ -1,91 +1,56 @@
-import './styles.css'
 import { useState } from 'react';
 import api from '../../../services/api';
-import { format } from 'date-fns'
+import { getItem } from '../../../utils/storage';
+import './styles.css';
 
-export default function EditTransactionModal({ categories, activeEditTransactionModal, setActiveEditTransactionModal, transactions, setTransactions }) {
-  const [transactionType, setTransactionType] = useState('input')
-  const [transactionValue, setTransactionValue] = useState('')
-  const [transactionCategory, setTransactionCategory] = useState('')
-  const [transactionDate, setTransactionDate] = useState('')
-  const [transactionWeekday, setTransactionWeekday] = useState('')
-  const [transactionDescription, setTransactionDescription] = useState('')
-  const [transactionId, setTransactionId] = useState(0)
-  // const [categories, setCategories] = useState([
-  //   {
-  //     id: 1,
-  //     name: 'Pix'
-  //   },
-  //   {
-  //     id: 2,
-  //     name: 'Lazer'
-  //   },
-  //   {
-  //     id: 3,
-  //     name: 'Alimentação'
-  //   },
-  //   {
-  //     id: 4,
-  //     name: 'TED'
-  //   },
-  //   {
-  //     id: 5,
-  //     name: 'Contas'
-  //   },
-  //   {
-  //     id: 6,
-  //     name: 'Depósito'
-  //   },
-  //   {
-  //     id: 7,
-  //     name: 'Mercado'
-  //   },
-  //   {
-  //     id: 8,
-  //     name: 'Farmácia'
-  //   },
-  // ])
+export default function EditTransactionModal({ transactionId, transactions, updateTransactions, allCategories, activeEditTransactionModal, setActiveEditTransactionModal }) {
+  const [record, setRecord] = useState({ value: 0, category: '', date: '', description: '', type: 'entrada' });
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState(false);
+  const [transactionType, setTransactionType] = useState('input');
 
-  function handleTransactionType(type) {
-    setTransactionType(type)
+  function handleInput(event) {
+    return setRecord({ ...record, [event.target.name]: event.target.value });
   }
 
-  function handleTransactionValue(value) {
-    setTransactionValue(value)
+  function handleClick(event) {
+    return setRecord({ ...record, type: event.target.name });
   }
 
-  function handleTransactionCategory(category) {
-    setTransactionCategory(category)
-  }
+  function handleSubmit(event) {
+    event.preventDefault();
+    setError('');
 
-  function handleTransactionDate(date) {
-    setTransactionDate(date)
-    const weekday = format(new Date(date), 'eeee');
-    setTransactionWeekday(weekday)
-  }
+    if (!record.value) return setError('Insira o valor');
+    if (!record.category) return setError('Insira a categoria');
+    if (!record.date) return setError('Insira uma data');
+    if (!record.description) return setError('Insira uma descrição');
 
-  function handleTransactionDescription(description) {
-    setTransactionDescription(description)
-  }
-
-  function handleEditTransaction() {
-    const newTransactions = transactions.map((transaction) => {
-      if (transaction.id === transactionId) {
-        return {
-          id: transactionId,
-          date: transactionDate,
-          type: transactionType,
-          weekday: transactionWeekday,
-          description: transactionDescription,
-          category: transactionCategory,
-          value: transactionType === 'input' ? `R$${transactionValue}` : `R$-${transactionValue}`,
-        }
-      } else {
-        return transaction
-      }
-    })
-    setTransactions(newTransactions)
+    updateTransaction(transactionId);
     setActiveEditTransactionModal(!activeEditTransactionModal)
+    return updateTransactions();
+  }
+
+  async function updateTransaction(id) {
+    const { value, category, date, description, type } = record;
+    const formattedValue = +value.replace(',', '.') * 100;
+    const dateArray = date.split('-');
+    const timestamp = new Date(dateArray[0], dateArray[1] - 1, dateArray[2]);
+    const data = {
+      tipo: type,
+      descricao: description,
+      valor: formattedValue,
+      data: timestamp,
+      categoria_id: +category
+    };
+    const token = getItem('token');
+    let response;
+    try {
+      response = await api.put(`/transacao/${id}`, data, { headers: { Authorization: `Bearer ${token}` } });
+    } catch (error) {
+      window.alert(error.response.data.mensagem);
+    }
+    return updateTransactions();
   }
 
   return (
@@ -101,13 +66,15 @@ export default function EditTransactionModal({ categories, activeEditTransaction
         </div>
         <div className="transaction-type-container">
           <button
-            className={transactionType === 'input' ? 'btn-modal-transaction-input btn-input-active' : 'btn-modal-transaction-input btn-inactive'}
-            onClick={() => handleTransactionType('input')}
+            className={`btn-modal-transaction-input ${record.type === 'entrada' ? ' btn-input-active' : 'btn-inactive'}`}
+            onClick={handleClick}
+            name='entrada'
           >Entrada
           </button>
           <button
-            className={transactionType === 'output' ? 'btn-modal-transaction-output btn-output-active' : 'btn-modal-transaction-output btn-inactive'}
-            onClick={() => handleTransactionType('output')}
+            className={`btn-modal-transaction-output ${record.type === 'saida' ? ' btn-output-active' : 'btn-inactive'}`}
+            onClick={handleClick}
+            name='saida'
           >Saída</button>
         </div>
         <div className="modal-inputs">
@@ -117,7 +84,7 @@ export default function EditTransactionModal({ categories, activeEditTransaction
               type="number"
               id="value"
               className="modal-value-input"
-              onChange={(event) => handleTransactionValue(event.target.value)}
+              onChange={handleInput}
             />
           </div>
           <div className="modal-category">
@@ -125,13 +92,14 @@ export default function EditTransactionModal({ categories, activeEditTransaction
             <select
               className="category-select"
               id='category'
-              onChange={(event) => handleTransactionCategory(event.target.value)}
+              onChange={handleInput}
               placeholder=''
+              name='category'
             >
-              <option value="" style={{ display: 'none' }}></option>
-              {categories.map((category) => (
-                <option key={category.id} value={category.name}>{category.name}</option>
-              ))}
+              <option key={0} value=''></option>
+              {allCategories.map(category =>
+                <option key={category.id} value={category.id}>{category.descricao}</option>
+              )}
             </select>
 
           </div>
@@ -141,7 +109,7 @@ export default function EditTransactionModal({ categories, activeEditTransaction
               className="modal-date-input"
               type="date"
               id='date'
-              onChange={(event) => handleTransactionDate(event.target.value)}
+              onChange={handleInput}
             />
           </div>
           <div className="modal-description">
@@ -151,14 +119,15 @@ export default function EditTransactionModal({ categories, activeEditTransaction
               type="text"
               maxLength={21}
               id='description'
-              onChange={(event) => handleTransactionDescription(event.target.value)}
+              onChange={handleInput}
             />
           </div>
         </div>
         <div className="modal-footer">
           <button
             className="modal-btn-confirm"
-            onClick={() => handleEditTransaction()}
+            onClick={handleSubmit}
+
           >Confirmar</button>
         </div>
       </div>

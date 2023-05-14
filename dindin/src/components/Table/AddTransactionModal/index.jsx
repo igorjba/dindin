@@ -1,63 +1,84 @@
-import './styles.css'
 import { useState } from 'react';
 import api from '../../../services/api';
-import { format } from 'date-fns'
+import { getItem } from '../../../utils/storage';
+import './styles.css';
 
-export default function AddTransactionModal({ categories, postTransaction, activeAddTransactionModal, setActiveAddTransactionModal, transactions, setTransactions }) {
-
-  //preencher os inputs com os dados da transação selecionada enviar formatados para a api
+export default function AddTransactionModal({ allCategories, updateTransactions, activeAddTransactionModal, setActiveAddTransactionModal }) {
+  const [record, setRecord] = useState({ value: 0, category: '', date: '', description: '', type: 'entrada' });
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState(false);
   const [transactionType, setTransactionType] = useState('input');
-  const [transactionValue, setTransactionValue] = useState('');
-  const [transactionCategory, setTransactionCategory] = useState('');
-  const [transactionDate, setTransactionDate] = useState('');
-  const [transactionDescription, setTransactionDescription] = useState('');
 
-  function handleTransactionType(type) {
-    setTransactionType(type);
+  function handleInput(event) {
+    return setRecord({ ...record, [event.target.name]: event.target.value });
   }
 
-  function handleTransactionValue(value) {
-    setTransactionValue(value);
+  function handleClick(event) {
+    return setRecord({ ...record, type: event.target.name });
   }
 
-  function handleTransactionCategory(category) {
-    setTransactionCategory(category);
+  function handleSubmit(event) {
+    event.preventDefault();
+    setError('');
+
+    if (!record.value) return setError('Insira o valor');
+    if (!record.category) return setError('Insira a categoria');
+    if (!record.date) return setError('Insira uma data');
+    if (!record.description) return setError('Insira uma descrição');
+
+    postTransaction();
+    setActiveAddTransactionModal(!activeAddTransactionModal)
+    return updateTransactions();
   }
 
-  function handleTransactionDate(date) {
-    setTransactionDate(date);
-  }
-
-  function handleTransactionDescription(description) {
-    setTransactionDescription(description);
-  }
-
-
-  async function handleAddTransaction() {
-    const token = localStorage.getItem('token');
-    const date = format(new Date(transactionDate), 'yyyy-MM-dd');
-    const body = {
-      valor: transactionValue,
-      tipo: transactionType,
-      categoria: transactionCategory,
-      data: date,
-      descricao: transactionDescription
-    }
+  async function postTransaction() {
+    const { value, category, date, description, type } = record;
+    const formattedValue = +value.replace(',', '.') * 100;
+    const dateArray = date.split('-');
+    const timestamp = new Date(dateArray[0], dateArray[1] - 1, dateArray[2]);
+    const data = {
+      tipo: type,
+      descricao: description,
+      valor: formattedValue,
+      data: timestamp,
+      categoria_id: +category
+    };
+    const token = getItem('token');
+    let response;
     try {
-      const response = await api.post('/transacao', body, { headers: { Authorization: `Bearer ${token}` } });
-      const { id, tipo: type, descricao: description, valor: value, data: date, usuario_id: userid, categoria_id: categoryid, categoria_nome: categoryname } = response.data;
-      const transaction = { id, type, description, value, date, userid, categoryid, categoryname };
-      postTransaction(transaction);
-      setActiveAddTransactionModal(!activeAddTransactionModal);
+      response = await api.post('/transacao', data, { headers: { Authorization: `Bearer ${token}` } });
     } catch (error) {
       window.alert(error.response.data.mensagem);
     }
+
+    return updateTransactions();
   }
 
-
+  async function updateTransaction(id) {
+    const { value, category, date, description, type } = record;
+    const formattedValue = +value.replace(',', '.') * 100;
+    const dateArray = date.split('-');
+    const timestamp = new Date(dateArray[0], dateArray[1] - 1, dateArray[2]);
+    const data = {
+      tipo: type,
+      descricao: description,
+      valor: formattedValue,
+      data: timestamp,
+      categoria_id: +category
+    };
+    const token = getItem('token');
+    let response;
+    try {
+      response = await api.put(`/transacao/${id}`, data, { headers: { Authorization: `Bearer ${token}` } });
+    } catch (error) {
+      window.alert(error.response.data.mensagem);
+    }
+    return updateTransactions();
+  }
 
   return (
-    <div className={activeAddTransactionModal ? "modal-add-transaction" : "modal-add-transaction hidden"}>
+    <div className={activeAddTransactionModal ? "modal-add-transaction" : "modal-add-transaction hidden"}
+    >
       <div className="modal-add-transaction-container">
         <div className="modal-add-transaction-header">
           <h1 className="tittle">Adicionar Registro</h1>
@@ -68,13 +89,15 @@ export default function AddTransactionModal({ categories, postTransaction, activ
         </div>
         <div className="transaction-type-container">
           <button
-            className={transactionType === 'input' ? 'btn-modal-transaction-input btn-input-active' : 'btn-modal-transaction-input btn-inactive'}
-            onClick={() => handleTransactionType('input')}
+            className={`btn-modal-transaction-input ${record.type === 'entrada' ? ' btn-input-active' : 'btn-inactive'}`}
+            onClick={handleClick}
+            name='entrada'
           >Entrada
           </button>
           <button
-            className={transactionType === 'output' ? 'btn-modal-transaction-output btn-output-active' : 'btn-modal-transaction-output btn-inactive'}
-            onClick={() => handleTransactionType('output')}
+            className={`btn-modal-transaction-output ${record.type === 'saida' ? ' btn-output-active' : 'btn-inactive'}`}
+            onClick={handleClick}
+            name='saida'
           >Saída</button>
         </div>
         <div className="modal-inputs">
@@ -84,7 +107,8 @@ export default function AddTransactionModal({ categories, postTransaction, activ
               type="number"
               id="value"
               className="modal-value-input"
-              onChange={(event) => handleTransactionValue(event.target.value)}
+              onChange={handleInput}
+              name='value'
             />
           </div>
           <div className="modal-category">
@@ -92,13 +116,14 @@ export default function AddTransactionModal({ categories, postTransaction, activ
             <select
               className="category-select"
               id='category'
-              onChange={(event) => handleTransactionCategory(event.target.value)}
+              onChange={handleInput}
               placeholder=''
+              name='category'
             >
-              <option value="" style={{ display: 'none' }}></option>
-              {categories.map((category) => (
-                <option key={category.id} value={category.name}>{category.name}</option>
-              ))}
+              <option key={0} value=''></option>
+              {allCategories.map(category =>
+                <option key={category.id} value={category.id}>{category.descricao}</option>
+              )}
             </select>
 
           </div>
@@ -108,7 +133,8 @@ export default function AddTransactionModal({ categories, postTransaction, activ
               className="modal-date-input"
               type="date"
               id='date'
-              onChange={(event) => handleTransactionDate(event.target.value)}
+              onChange={handleInput}
+              name='date'
             />
           </div>
           <div className="modal-description">
@@ -118,14 +144,15 @@ export default function AddTransactionModal({ categories, postTransaction, activ
               type="text"
               maxLength={21}
               id='description'
-              onChange={(event) => handleTransactionDescription(event.target.value)}
+              onChange={handleInput}
+              name='description'
             />
           </div>
         </div>
         <div className="modal-footer">
           <button
             className="modal-btn-confirm"
-            onClick={() => handleAddTransaction()}
+            onClick={handleSubmit}
           >Confirmar</button>
         </div>
       </div>
