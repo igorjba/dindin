@@ -1,14 +1,14 @@
 import { format } from 'date-fns';
 import { useEffect, useRef, useState } from 'react';
+import { NumericFormat } from 'react-number-format';
 import api from '../../../services/api';
 import { getItem } from '../../../utils/storage';
 import './styles.css';
 
 export default function EditTransactionModal({ transactionId, updateTransactions, allCategories, activeEditTransactionModal, setActiveEditTransactionModal }) {
-  const [record, setRecord] = useState({ value: 0, category: '', date: '', description: '', type: '' });
+  const [record, setRecord] = useState({ value: transactionId.value / 100, category: '', date: '', description: '', type: '' });
   const [error, setError] = useState('');
 
-  const valueRef = useRef(null);
   const categoryRef = useRef(null);
   const dateRef = useRef(null);
   const descriptionRef = useRef(null);
@@ -16,12 +16,10 @@ export default function EditTransactionModal({ transactionId, updateTransactions
   useEffect(() => {
     setRecord({ ...record, type: transactionId.type });
     const formattedDate = format(new Date(transactionId.date), 'yyyy-MM-dd');
-    valueRef.current.value = transactionId.value / 100;
     categoryRef.current.value = transactionId.categoryid;
     dateRef.current.value = formattedDate;
     descriptionRef.current.value = transactionId.description;
   }, []);
-
 
   function handleInput(event) {
     return setRecord({ ...record, [event.target.name]: event.target.value });
@@ -47,7 +45,7 @@ export default function EditTransactionModal({ transactionId, updateTransactions
 
   async function updateTransaction(id) {
     const { value, category, date, description, type } = record;
-    const formattedValue = +value.replace(',', '.') * 100;
+    const formattedValue = value * 100;
     const dateArray = date.split('-');
     const timestamp = new Date(dateArray[0], dateArray[1] - 1, dateArray[2]);
     const data = {
@@ -94,13 +92,17 @@ export default function EditTransactionModal({ transactionId, updateTransactions
         <div className="modal-inputs">
           <div className="modal-value">
             <label htmlFor='value' className="modal-value-text input-label">Valor</label>
-            <input
-              type="number"
-              id="value"
+            <NumericFormat
+              value={record.value}
+              displayType="input"
+              thousandSeparator="."
+              decimalSeparator=","
+              allowNegative={false}
+              onValueChange={(values) => setRecord({ ...record, value: values.floatValue })}
               className="modal-value-input"
-              onChange={handleInput}
               name='value'
-              ref={valueRef}
+              prefix="R$ "
+              placeholder='R$ 0,00'
             />
           </div>
           <div className="modal-category">
