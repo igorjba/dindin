@@ -6,13 +6,13 @@
 
     width: 100%;
     height: 100%;
-
     padding: 122px;
 }
 
 .pitch {
-    color: white;
     width: 614px;
+
+    color: white;
 }
 
 .pitch h1 {
@@ -21,6 +21,7 @@
     line-height: 62px;
     letter-spacing: 0em;
     text-align: left;
+
     margin-bottom: 33px;
 }
 
@@ -30,7 +31,8 @@
     line-height: 33px;
     letter-spacing: 0em;
     text-align: left;
-    margin-bottom: 43px; 
+
+    margin-bottom: 43px;
 }
 
 #finances {

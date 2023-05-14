@@ -1,7 +1,7 @@
-import './styles.css';
 import { useState } from 'react';
+import './styles.css';
 
-export default function Filter( { setActiveFilters, filterStart, categories } ) {
+export default function Filter({ setActiveFilters, filterStart, categories }) {
 
   const filterButtonsStart = {};
   categories.forEach(category => filterButtonsStart[category] = false);
@@ -11,9 +11,9 @@ export default function Filter( { setActiveFilters, filterStart, categories } ) 
 
   function spawnFilterCategory(category, index) {
     return <div
-    key={`filter${index}`}
-    className={`category round ${selectedFilters[category] ? "selected" : ""}`}
-    onClick={clickFilterCategory}
+      key={`filter${index}`}
+      className={`category round ${selectedFilters[category] ? "selected" : ""}`}
+      onClick={clickFilterCategory}
     >
       {category}<div>+</div>
     </div>;
@@ -21,7 +21,7 @@ export default function Filter( { setActiveFilters, filterStart, categories } ) 
 
   function clickFilterCategory(event) {
     const option = event.target.firstChild.data;
-    const localSelectedFilters = {...selectedFilters, [option]: !selectedFilters[option]};
+    const localSelectedFilters = { ...selectedFilters, [option]: !selectedFilters[option] };
     return setSelectedFilters(localSelectedFilters);
   }
 
@@ -33,19 +33,19 @@ export default function Filter( { setActiveFilters, filterStart, categories } ) 
   return (
     <div className='filter-container'>
       <div className='filter-btn round' alt='Filter' onClick={() => setShowFilter(!showFilter)}>
-        <div className='filter-icon' alt='Filter icon'/> Filtrar
+        <div className='filter-icon' alt='Filter icon' /> Filtrar
       </div>
       {showFilter &&
-      <div className='categories-container round'>
-        <div className='categories-title'>Categoria</div>
-        <div className='categories-options'>
-          {categories.map((category, index) => spawnFilterCategory(category, index))}
+        <div className='categories-container round'>
+          <div className='categories-title'>Categoria</div>
+          <div className='categories-options'>
+            {categories.map((category, index) => spawnFilterCategory(category, index))}
+          </div>
+          <div className='categories-btns'>
+            <button className='round clear' onClick={clearFilters}>Limpar Filtros</button>
+            <button className='round apply first' onClick={() => setActiveFilters(selectedFilters)}>Aplicar Filtros</button>
+          </div>
         </div>
-        <div className='categories-btns'>
-          <button className='round clear' onClick={clearFilters}>Limpar Filtros</button>
-          <button className='round apply' onClick={() => setActiveFilters(selectedFilters)}>Aplicar Filtros</button>
-        </div>
-      </div>
       }
     </div>
   )

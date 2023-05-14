@@ -1,12 +1,12 @@
-import './styles.css';
-import editIcon from '../../../assets/edit-icon.svg';
-import trashIcon from '../../../assets/trash-icon.svg';
 import { format } from 'date-fns';
 import { useState } from 'react';
+import editIcon from '../../../assets/edit-icon.svg';
+import trashIcon from '../../../assets/trash-icon.svg';
 import api from '../../../services/api';
 import { getItem } from '../../../utils/storage';
+import './styles.css';
 
-export default function Listing({ transactions, activeFilters, setTransactionId, setTransactions, activeEditTransactionModal, setActiveEditTransactionModal, updateTransactions }) {
+export default function Listing({ transactions, activeFilters, setTransactionId, activeEditTransactionModal, setActiveEditTransactionModal, updateTransactions }) {
 
   const [deletePopup, setDeletePopup] = useState(false);
 

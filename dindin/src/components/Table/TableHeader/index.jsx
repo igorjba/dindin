@@ -1,11 +1,11 @@
-import './styles.css';
-import ArrowUpIcon from '../../../assets/arrow-top.svg';
-import ArrowDownIcon from '../../../assets/arrow-bottom.svg';
 import { useState } from 'react';
+import ArrowDownIcon from '../../../assets/arrow-bottom.svg';
+import ArrowUpIcon from '../../../assets/arrow-top.svg';
+import './styles.css';
 
 export default function TableHeader() {
 
-  const [order, setOrder] = useState(true); // add sorting logic above on table
+  const [order, setOrder] = useState(true);
 
   return (
     <div className='table-header round'>

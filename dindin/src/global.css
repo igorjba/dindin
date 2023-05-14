@@ -71,7 +71,9 @@ button {
   text-transform: capitalize;
 }
 
-/* add btn click and hover fx */
+button:hover {
+  opacity: 0.9;
+}
 
 #root {
   display: flex;
@@ -98,7 +100,9 @@ input {
 
 label {
   align-self: flex-start;
+
   color: #484848;
+
   font-weight: 500;
   font-size: 24px;
   line-height: 28px;

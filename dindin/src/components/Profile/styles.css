@@ -3,18 +3,19 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #3D3D3D7A;
+    z-index: 1;
+
     width: 100%;
     height: 100%;
     top: 0px;
     left: 0px;
-    z-index: 1;
-    
+
+    background-color: #3D3D3D7A;
 }
 
 .profile-modal {
-    display: flex;
     position: relative;
+    display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
@@ -35,7 +36,6 @@
     align-items: center;
     justify-content: space-between;
 
-
     width: 100%;
 }
 
@@ -49,12 +49,16 @@
 
 .error {
     position: absolute;
+
     bottom: 15px;
+
     color: rgb(162, 17, 17);
 }
 
 .success {
     position: absolute;
+
     bottom: 15px;
+
     color: rgb(17, 162, 51);
 }

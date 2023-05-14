@@ -1,14 +1,13 @@
-import './styles.css';
-import Filter from './Filter';
-import Listing from './Listing';
-import TableHeader from './TableHeader';
-import Summary from './Summary';
+import { useEffect, useRef, useState } from 'react';
+import api from '../../services/api';
+import { getItem } from '../../utils/storage';
 import AddTransactionModal from './AddTransactionModal';
 import EditTransactionModal from './EditTransactionModal';
-import RecordModal from '../RecordModal';
-import { useState, useEffect, useRef } from 'react';
-import { getItem } from '../../utils/storage';
-import api from '../../services/api';
+import Filter from './Filter';
+import Listing from './Listing';
+import Summary from './Summary';
+import TableHeader from './TableHeader';
+import './styles.css';
 
 export default function Table({ makeLogout }) {
 
@@ -100,7 +99,6 @@ export default function Table({ makeLogout }) {
 
   const [showRecordModal, setShowRecordModal] = useState(false);
   const [allCategories, setAllCategories] = useState([]);
-  //enviar o id da transação do listing para o modal de edição.
   const [transactionId, setTransactionId] = useState({});
 
   return (
@@ -128,14 +126,8 @@ export default function Table({ makeLogout }) {
           allCategories={allCategories}
           updateTransactions={updateTransactions}
           transactionId={transactionId}
+        />}
 
-        /> }
-        {/* {showRecordModal &&
-          <RecordModal
-            updateTransactions={updateTransactions}
-            showRecordModal={showRecordModal}
-            setShowRecordModal={setShowRecordModal}
-            allCategories={allCategories} />} */}
       </div>
       <Summary
         summaryRef={summaryRef}

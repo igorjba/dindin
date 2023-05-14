@@ -1,10 +1,10 @@
-import './styles.css';
 import Table from '../../components/Table';
+import './styles.css';
 
-export default function Home( { makeLogout } ) {
+export default function Home({ makeLogout }) {
   return (
     <div className='home-container'>
-      <Table makeLogout={makeLogout}/>
+      <Table makeLogout={makeLogout} />
     </div>
   )
 }
