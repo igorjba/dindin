@@ -1,7 +1,7 @@
 import './styles.css';
 
 
-export default function Summary({ summaryRef, setActiveAddTransactionModal, activeAddTransactionModal }) {
+export default function Summary({ summaryRef, setShowRecordModal, showRecordModal }) {
 
   return (
     <aside className='sidebar'>
@@ -28,7 +28,7 @@ export default function Summary({ summaryRef, setActiveAddTransactionModal, acti
       </div>
       <button
         className='btn-add-record'
-        onClick={() => setActiveAddTransactionModal(!activeAddTransactionModal)}
+        onClick={() => setShowRecordModal(!showRecordModal)}
       >
         Adicionar Registro
       </button>

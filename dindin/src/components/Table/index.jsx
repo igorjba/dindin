@@ -5,6 +5,7 @@ import TableHeader from './TableHeader';
 import Summary from './Summary';
 import AddTransactionModal from './AddTransactionModal';
 import EditTransactionModal from './EditTransactionModal';
+import RecordModal from '../RecordModal';
 import { useState, useEffect, useRef } from 'react';
 import { getItem } from '../../utils/storage';
 import api from '../../services/api';
@@ -12,6 +13,7 @@ import api from '../../services/api';
 export default function Table({ makeLogout }) {
 
   useEffect(() => {
+    retrieveCategories();
     updateTransactions();
   }, []);
 
@@ -73,22 +75,16 @@ export default function Table({ makeLogout }) {
     return;
   }
 
-  async function postTransaction() {
-    const data = {
-      tipo: "entrada",
-      descricao: "Salário",
-      valor: 300000,
-      data: "2022-03-24T15:30:00.000Z",
-      categoria_id: 5
-    };
-    const token = getItem('token');
+  async function retrieveCategories() {
     let response;
+    const token = getItem('token');
     try {
-      response = await api.post('/transacao', data, { headers: { Authorization: `Bearer ${token}` } });
+      response = await api.get('/categoria', {headers: {Authorization: `Bearer ${token}`}});
     } catch (error) {
-      makeLogout();
+      window.alert(error);
     }
-    return updateTransactions();
+    const categories = response.data;
+    return setAllCategories(categories);
   }
 
   const [categories, setCategories] = useState([]);
@@ -102,6 +98,9 @@ export default function Table({ makeLogout }) {
   const [activeAddTransactionModal, setActiveAddTransactionModal] = useState(false);
   const [activeEditTransactionModal, setActiveEditTransactionModal] = useState(false);
 
+  const [showRecordModal, setShowRecordModal] = useState(false);
+  const [allCategories, setAllCategories] = useState([]);
+
   return (
     <main>
       <div className='table'>
@@ -111,8 +110,10 @@ export default function Table({ makeLogout }) {
           setActiveEditTransactionModal={setActiveEditTransactionModal}
           activeEditTransactionModal={activeEditTransactionModal}
           activeFilters={activeFilters}
+          updateTransactions={updateTransactions}
         />
 
+{/*
         <AddTransactionModal
           setActiveAddTransactionModal={setActiveAddTransactionModal} activeAddTransactionModal={activeAddTransactionModal}
           transactions={transactions} setTransactions={setTransactions}
@@ -123,12 +124,20 @@ export default function Table({ makeLogout }) {
           transactions={transactions} setTransactions={setTransactions}
           categories={categories} postTransaction={postTransaction}
 
-        />
+        /> */}
+        {showRecordModal &&
+        <RecordModal
+        updateTransactions={updateTransactions}
+        showRecordModal={showRecordModal}
+        setShowRecordModal={setShowRecordModal}
+        allCategories={allCategories}/>}
       </div>
       <Summary
         summaryRef={summaryRef}
         setActiveAddTransactionModal={setActiveAddTransactionModal}
         activeAddTransactionModal={activeAddTransactionModal}
+        showRecordModal={showRecordModal}
+        setShowRecordModal={setShowRecordModal}
       />
     </main>
   )
