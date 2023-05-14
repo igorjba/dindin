@@ -6,7 +6,7 @@ import { getItem } from '../../../utils/storage';
 import './styles.css';
 
 export default function EditTransactionModal({ transactionId, updateTransactions, allCategories, activeEditTransactionModal, setActiveEditTransactionModal }) {
-  const [record, setRecord] = useState({ value: transactionId.value / 100, category: '', date: '', description: '', type: '' });
+  const [record, setRecord] = useState({ value: transactionId.value / 100, category: transactionId.categoryid, date: format(new Date(transactionId.date), 'yyyy-MM-dd'), description: transactionId.description, type: '' });
   const [error, setError] = useState('');
 
   const categoryRef = useRef(null);
@@ -15,9 +15,8 @@ export default function EditTransactionModal({ transactionId, updateTransactions
 
   useEffect(() => {
     setRecord({ ...record, type: transactionId.type });
-    const formattedDate = format(new Date(transactionId.date), 'yyyy-MM-dd');
     categoryRef.current.value = transactionId.categoryid;
-    dateRef.current.value = formattedDate;
+    dateRef.current.value = record.date;
     descriptionRef.current.value = transactionId.description;
   }, []);
 
@@ -38,7 +37,7 @@ export default function EditTransactionModal({ transactionId, updateTransactions
     if (!record.date) return setError('Insira uma data');
     if (!record.description) return setError('Insira uma descrição');
 
-    updateTransaction(transactionId);
+    updateTransaction(transactionId.id);
     setActiveEditTransactionModal(!activeEditTransactionModal)
     return updateTransactions();
   }
