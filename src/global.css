@@ -45,9 +45,6 @@ body {
   align-items: center;
   justify-content: center;
 
-  width: 1440px;
-  height: 1024px;
-
   font-family: var(--main-font-family);
 }
 
