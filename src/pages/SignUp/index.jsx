@@ -1,5 +1,4 @@
 import SignUpForm from '../../components/SignUpForm';
-import './styles.css';
 
 export default function SignUp() {
   return (
@@ -7,4 +6,4 @@ export default function SignUp() {
       <SignUpForm />
     </div>
   )
-};
+}

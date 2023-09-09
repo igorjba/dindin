@@ -39,8 +39,8 @@ export default function MainRoutes() {
         return setUser(null);
     }
 
-    function RequireAuth({ children, redirectTo }) { return user ? children : <Navigate to={redirectTo} /> };
-    function RequireNotAuth({ children, redirectTo }) { return !user ? children : <Navigate to={redirectTo} /> };
+    function RequireAuth({ children, redirectTo }) { return user ? children : <Navigate to={redirectTo} /> }
+    function RequireNotAuth({ children, redirectTo }) { return !user ? children : <Navigate to={redirectTo} /> }
 
     return (
         <div className='app' style={user ? { backgroundImage: `url(${InsideBackground})` } : { backgroundImage: `url(${OutsideBackground})` }}>

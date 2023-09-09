@@ -19,4 +19,4 @@ export default function Header({ logged, user, makeLogout, setUser }) {
       {showProfile && <Profile showProfile={showProfile} setShowProfile={setShowProfile} user={user} setUser={setUser} />}
     </header>
   )
-};
+}
